@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="viol1t">
+
+
+
+
+
+<title>浅析Blockchain类题入门 | viol1t</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">viol1t</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">viol1t</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">浅析Blockchain类题入门</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">viol1t</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">八月 23, 2023&nbsp;&nbsp;13:54:42</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/wp/">wp</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="浅析Blockchain类题入门"><a href="#浅析Blockchain类题入门" class="headerlink" title="浅析Blockchain类题入门"></a>浅析Blockchain类题入门</h1><h2 id="分享一下blockchain方向ctf入门题的解决办法"><a href="#分享一下blockchain方向ctf入门题的解决办法" class="headerlink" title="分享一下blockchain方向ctf入门题的解决办法"></a>分享一下blockchain方向ctf入门题的解决办法</h2><h3 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h3><blockquote>
+<p>1、MetaMask小狐狸插件（链接题目私链）</p>
+<p>2、remix工具（可以本地搭建也可以使用在线的<a target="_blank" rel="noopener" href="https://remix.ethereum.org/">https://remix.ethereum.org/</a>)</p>
+<p>3、nc工具</p>
+</blockquote>
+<h3 id="题目解析："><a href="#题目解析：" class="headerlink" title="题目解析："></a>题目解析：</h3><blockquote>
+<p>题目会给出三个链接</p>
+<p>1、水龙头</p>
+<p>2、私链地址</p>
+<p>3、题目部署地址</p>
+</blockquote>
+<p>1、水龙头是干嘛的呢，为你私链链接之后给你的私链账户发送测试币的，这也是题目必须的</p>
+<p>2、私链地址，我们需要在MetaMask中配置私链的网络环境，需要将题目的私链地址加上http:&#x2F;&#x2F;输入进去，他的链ID在随便输入之后会提示你正确ID</p>
+<p>3、nc链接之后一般会给三个选项：</p>
+<p>​	1）创建合约地址（一般创建完成之后向该地址转入0.001测试币即可生效）</p>
+<p>​	2）部署挑战合约（在1生效之后可以部署挑战合约地址用来后续攻击）</p>
+<p>​	3）测试是否攻击成功，如果成功即可拿到flag</p>
+<p>​	4）查看solidity源码</p>
+<p>下面用一个最近比赛WMCTF2023的Blockchain的例子来简单过一下入门：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">contracts/Example.sol</span><br><span class="line">pragma solidity ^0.5.0;</span><br><span class="line"></span><br><span class="line">contract Challenge &#123;</span><br><span class="line">    bool public solved = false;</span><br><span class="line">    uint256 private secretNumber;</span><br><span class="line"></span><br><span class="line">    constructor() public &#123;</span><br><span class="line">        secretNumber = block.timestamp % 10 + 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function guessNumber(uint256 _num) public &#123;</span><br><span class="line">        uint256 num = _num;</span><br><span class="line"></span><br><span class="line">        assembly &#123;</span><br><span class="line">            let m := mload(0x40)</span><br><span class="line">            let a := and(sload(secretNumber_slot), 1)</span><br><span class="line">            let b := and(num, 1)</span><br><span class="line">            let result := eq(a, b)</span><br><span class="line">            mstore(m, result)</span><br><span class="line">            sstore(solved_slot, result)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function isSolved() public view returns (bool) &#123;</span><br><span class="line">        return solved;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>分析一下代码</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    constructor() public &#123;</span><br><span class="line">        secretNumber = block.timestamp % 10 + 1;</span><br><span class="line">    &#125;</span><br><span class="line">这个构造函数在合约部署时会被调用.</span><br><span class="line">它会计算当前区块的时间戳对 10 取模，然后加 1，得到一个 1 到 10 之间的随机数，并将其存储在 secretNumber 变量中。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function guessNumber(uint256 _num) public &#123;</span><br><span class="line">    uint256 num = _num;</span><br><span class="line"></span><br><span class="line">    assembly &#123;</span><br><span class="line">        let m := mload(0x40)</span><br><span class="line">        let a := and(sload(secretNumber_slot), 1)</span><br><span class="line">        let b := and(num, 1)</span><br><span class="line">        let result := eq(a, b)</span><br><span class="line">        mstore(m, result)</span><br><span class="line">        sstore(solved_slot, result)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">接受一个_num参数使用汇编来比较secretNumber 的最低位和 _num 的最低位是否相等。</span><br><span class="line">如果相等，将 result 设置为 true，否则为 false。最后，将 result 存储在 solved 变量中。</span><br></pre></td></tr></table></figure>
+
+<p>合约的核心逻辑是，在猜测数字时，它并不是直接比较输入数字与 <code>secretNumber</code> 是否相等，而是比较它们的最低有效位（LSB）是否相等。如果相等，<code>solved</code> 将被设置为 <code>true</code>。</p>
+<p>只需要最低位是否相等所以我们只需要比较一个0还有一个1就可以得出是否解决问题。</p>
+<p>所以我们需要构造一个函数来调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function guess() public &#123;</span><br><span class="line">    // 尝试一个奇数</span><br><span class="line">    challengeInstance.guessNumber(1);</span><br><span class="line">    if(challengeInstance.isSolved()) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 如果奇数不工作，尝试一个偶数</span><br><span class="line">    challengeInstance.guessNumber(2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>全部都构造完成之后调用check检查是否成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function checkSolved() public view returns (bool) &#123;</span><br><span class="line">        return challengeInstance.isSolved();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>​	最后回到题目nc链接输入地址就可以拿到flag</p>
+<p><img src="/2023/08/23/Blockchain/blockchain_1.png" alt="blockchain_1"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>viol1t</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://viol1t.gitee.io/2023/08/23/Blockchain/">https://viol1t.gitee.io/2023/08/23/Blockchain/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2023 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Blockchain/"># Blockchain</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/09/19/Pwn2Own-RAX30-Routers%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">Pwn2Own-RAX30 Routers漏洞分析</a>
+            
+            
+            <a class="next" rel="next" href="/2023/05/19/2023%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E6%98%A5%E5%AD%A3%E8%B5%9BPWN-AK/">2023年春秋杯网络安全联赛春季赛PWN(AK)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© viol1t | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
