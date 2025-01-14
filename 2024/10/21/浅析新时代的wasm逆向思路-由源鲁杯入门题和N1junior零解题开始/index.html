@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="viol1t">
+
+
+
+
+
+<title>浅析新时代的wasm逆向思路-由源鲁杯入门题和N1junior零解题开始 | viol1t</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">viol1t</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">viol1t</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">浅析新时代的wasm逆向思路-由源鲁杯入门题和N1junior零解题开始</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">viol1t</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十月 21, 2024&nbsp;&nbsp;17:52:41</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/reverse/">reverse</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>WebAssembly的逆向工程在实际应用和CTF竞赛中愈发频繁。当前网络上的一些关于 Wasm 逆向的文章和教程往往显得过于繁琐或过时，因此本文旨在探讨 2024 年我们该如何更高效解决 Wasm 的逆向问题。</p>
+<p>本文将对 Wasm 进行简要介绍，接着阐述几种常见的逆向方法及其优缺点，最后通过两道 2024 年的赛题进行实践演示。</p>
+<h2 id="关于wasm"><a href="#关于wasm" class="headerlink" title="关于wasm"></a>关于wasm</h2><p>WebAssembly（简称 Wasm）是一种新兴的低级字节码格式，旨在提升 Web 应用程序的性能和效率。Wasm 代码能够在现代浏览器中以接近原生的执行速度运行，此外，它还可以适用于服务器和嵌入式设备等多种环境。这种特性使得 Wasm 成为开发高性能 Web 应用的理想选择。</p>
+<p>Wasm 的设计初衷是为了让开发者能够在不同平台上实现高效的代码执行，同时保持良好的跨平台特性。由于其低级特性，Wasm 也逐渐成为逆向工程师关注的焦点。</p>
+<p>对于想要进行 Wasm 逆向工程的开发者和研究者，可以利用一些在线工具，比如<a target="_blank" rel="noopener" href="https://mbebenita.github.io/WasmExplorer/">https://mbebenita.github.io/WasmExplorer/</a> ，该网站允许用户进行简单的 Wasm 编译和优化，提供了一个直观的界面以便于快速实验和学习。</p>
+<h2 id="逆向wasm的几种方法"><a href="#逆向wasm的几种方法" class="headerlink" title="逆向wasm的几种方法"></a>逆向wasm的几种方法</h2><h3 id="解包反编译wasm，配合ida"><a href="#解包反编译wasm，配合ida" class="headerlink" title="解包反编译wasm，配合ida"></a>解包反编译wasm，配合ida</h3><p>首先，可以使用 wasm2wat 工具将 .wasm 文件转换为文本格式的 .wat 文件。这一步骤有助于分析 Wasm 的结构和逻辑。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./wasm2wat wasm.wasm -o wasm.wat</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./wasm2c wasm.wasm -o wasm.c</span></span><br></pre></td></tr></table></figure>
+
+<p>经过以上步骤后，将会生成 wasm.c 和 wasm.h 文件。这些文件可以与 IDA Pro 配合使用，进行更深入的静态分析。</p>
+<p>虽然这种方法相对繁琐，但其优势在于利用了 IDA Pro 强大的分析能力，相比之下，Ghidra 的反编译效果往往不尽如人意。</p>
+<h3 id="ghidra插件一把梭"><a href="#ghidra插件一把梭" class="headerlink" title="ghidra插件一把梭"></a>ghidra插件一把梭</h3><p>对于希望快速进行 Wasm 反编译的用户，可以使用 Ghidra 的 Wasm 插件，具体信息可参考 <a target="_blank" rel="noopener" href="https://github.com/nneonneo/ghidra-wasm-plugin/">https://github.com/nneonneo/ghidra-wasm-plugin/</a></p>
+<p>这种方法的优势在于其简单快捷，用户只需安装插件即可开始分析。然而，Ghidra 的反编译和操作体验有时会让人感到不够理想，尤其在面对复杂代码时。</p>
+<h3 id="IDA9-0"><a href="#IDA9-0" class="headerlink" title="IDA9.0"></a>IDA9.0</h3><p>IDA 9.0 版本添加了对 Wasm 的反汇编支持，但目前尚未实现反编译功能。在处理 Wasm 文件时，可以考虑将 IDA 9.0 与 Ghidra 结合使用，以便更全面地解决逆向工程中的问题。</p>
+<h3 id="chrome-开发者工具-VSCODE-nodejs"><a href="#chrome-开发者工具-VSCODE-nodejs" class="headerlink" title="chrome 开发者工具 &#x2F; VSCODE nodejs"></a>chrome 开发者工具 &#x2F; VSCODE nodejs</h3><p>Chrome 开发者工具和 VSCode 的 Node.js 插件提供了对 Wasm 的调试支持。结合 Ghidra 的插件，可以在 Chrome 中设置断点并进行调试。这种方法适合需要动态分析的场景，能够实时查看内存和调用栈的变化。</p>
+<p>更多关于 Wasm 调试和内存查看的方法，可以参见参考文章：<a target="_blank" rel="noopener" href="https://panda0s.top/2021/05/14/WebAssembly-Reverse/#%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95">https://panda0s.top/2021/05/14/WebAssembly-Reverse/#%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95</a></p>
+<h2 id="2024源鲁杯round2-wasm"><a href="#2024源鲁杯round2-wasm" class="headerlink" title="2024源鲁杯round2 wasm"></a>2024源鲁杯round2 wasm</h2><h3 id="解题分析"><a href="#解题分析" class="headerlink" title="解题分析"></a>解题分析</h3><p>题目给了一个wasm文件，这里我们采用ghidra一把梭的方式。得到反编译的代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">undefined4 <span class="title function_">unnamed_function_7</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> local_20 [<span class="number">4</span>];</span><br><span class="line">  <span class="type">int</span> local_10;</span><br><span class="line">  <span class="type">int</span> local_c;</span><br><span class="line">  <span class="type">int</span> local_8;</span><br><span class="line">  undefined4 local_4;</span><br><span class="line">  </span><br><span class="line">  local_4 = <span class="number">0</span>;</span><br><span class="line">  local_8 = unnamed_function_14(s_GZCTF_FLAG_ram_00000429);</span><br><span class="line">  local_c = unnamed_function_20(local_8);</span><br><span class="line">  <span class="keyword">if</span> ((local_c != <span class="number">0</span>) &amp;&amp; (*(<span class="type">char</span> *)(local_8 + local_c + <span class="number">-1</span>) == <span class="string">&#x27;\n&#x27;</span>)) &#123;</span><br><span class="line">    *(undefined *)(local_8 + local_c + <span class="number">-1</span>) = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (local_10 = <span class="number">0</span>; *(<span class="type">char</span> *)(local_8 + local_10) != <span class="string">&#x27;\0&#x27;</span>; local_10 = local_10 + <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> ((*(<span class="type">char</span> *)(local_8 + local_10) &lt; <span class="string">&#x27;A&#x27;</span>) || (<span class="string">&#x27;Z&#x27;</span> &lt; *(<span class="type">char</span> *)(local_8 + local_10))) &#123;</span><br><span class="line">      <span class="keyword">if</span> ((*(<span class="type">char</span> *)(local_8 + local_10) &lt; <span class="string">&#x27;a&#x27;</span>) || (<span class="string">&#x27;z&#x27;</span> &lt; *(<span class="type">char</span> *)(local_8 + local_10))) &#123;</span><br><span class="line">        *(undefined *)(local_8 + local_10) = *(undefined *)(local_8 + local_10);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        *(<span class="type">char</span> *)(local_8 + local_10) = *(<span class="type">char</span> *)(local_8 + local_10) + <span class="number">-0x20</span>;</span><br><span class="line">        *(<span class="type">char</span> *)(local_8 + local_10) = (<span class="type">char</span>)((*(<span class="type">char</span> *)(local_8 + local_10) + <span class="number">-0x3a</span>) % <span class="number">0x1a</span>) + <span class="string">&#x27;A&#x27;</span></span><br><span class="line">        ;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      *(<span class="type">char</span> *)(local_8 + local_10) = *(<span class="type">char</span> *)(local_8 + local_10) + <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">      *(<span class="type">char</span> *)(local_8 + local_10) = (<span class="type">char</span>)((*(<span class="type">char</span> *)(local_8 + local_10) + <span class="number">-0x5a</span>) % <span class="number">0x1a</span>) + <span class="string">&#x27;a &#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (local_10 = <span class="number">0</span>; *(<span class="type">char</span> *)(local_8 + local_10) != <span class="string">&#x27;\0&#x27;</span>; local_10 = local_10 + <span class="number">1</span>) &#123;</span><br><span class="line">    local_20[<span class="number">0</span>] = (<span class="type">int</span>)*(<span class="type">char</span> *)(local_8 + local_10);</span><br><span class="line">    unnamed_function_15(<span class="number">0x43a</span>,local_20);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>ghidra的反编译有些丑陋，我对他进行了一些优化。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">undefined4 <span class="title function_">unnamed_function_7</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> local_20 [<span class="number">4</span>];</span><br><span class="line">  <span class="type">int</span> i;</span><br><span class="line">  <span class="type">int</span> local_c;</span><br><span class="line">  <span class="type">int</span> gzflag;</span><br><span class="line">  undefined4 local_4;</span><br><span class="line">  </span><br><span class="line">  local_4 = <span class="number">0</span>;</span><br><span class="line">  gzflag = unnamed_function_14(s_GZCTF_FLAG_ram_00000429);</span><br><span class="line">  local_c = unnamed_function_20(gzflag);</span><br><span class="line">  <span class="keyword">if</span> ((local_c != <span class="number">0</span>) &amp;&amp; (*(<span class="type">char</span> *)(gzflag + local_c + <span class="number">-1</span>) == <span class="string">&#x27;\n&#x27;</span>)) &#123;</span><br><span class="line">    *(undefined *)(gzflag + local_c + <span class="number">-1</span>) = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; *(<span class="type">char</span> *)(gzflag[i]) != <span class="string">&#x27;\0&#x27;</span>; i = i + <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> ((*(<span class="type">char</span> *)(gzflag[i]) &lt; <span class="string">&#x27;A&#x27;</span>) || (<span class="string">&#x27;Z&#x27;</span> &lt; *(<span class="type">char</span> *)(gzflag[i]))) &#123;</span><br><span class="line">      <span class="keyword">if</span> ((*(<span class="type">char</span> *)(gzflag[i]) &lt; <span class="string">&#x27;a&#x27;</span>) || (<span class="string">&#x27;z&#x27;</span> &lt; *(<span class="type">char</span> *)(gzflag[i]))) &#123;</span><br><span class="line">        *(undefined *)(gzflag[i]) = *(undefined *)(gzflag[i]);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        *(<span class="type">char</span> *)(gzflag[i]) = *(<span class="type">char</span> *)(gzflag[i]) + <span class="number">-0x20</span>;</span><br><span class="line">        *(<span class="type">char</span> *)(gzflag[i]) = (<span class="type">char</span>)((*(<span class="type">char</span> *)(gzflag[i]) + <span class="number">-0x3a</span>) % <span class="number">0x1a</span>) + <span class="string">&#x27;A&#x27;</span></span><br><span class="line">        ;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      *(<span class="type">char</span> *)(gzflag[i]) = *(<span class="type">char</span> *)(gzflag[i]) + <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">      *(<span class="type">char</span> *)(gzflag[i]) = (<span class="type">char</span>)((*(<span class="type">char</span> *)(gzflag[i]) + <span class="number">-0x5a</span>) % <span class="number">0x1a</span>) + <span class="string">&#x27;a &#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; *(<span class="type">char</span> *)(gzflag[i]) != <span class="string">&#x27;\0&#x27;</span>; i = i + <span class="number">1</span>) &#123;</span><br><span class="line">    local_20[<span class="number">0</span>] = (<span class="type">int</span>)*(<span class="type">char</span> *)(gzflag[i]);</span><br><span class="line">    unnamed_function_15(<span class="number">0x43a</span>,local_20);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>观察发现这是一个简单的类似于凯撒的加密，不过也不是一模一样，总之guess一下写出脚本就好了。</p>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt_flag</span>(<span class="params">gzflag</span>):</span><br><span class="line">    decrypted = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> char <span class="keyword">in</span> gzflag:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;A&#x27;</span> &lt;= <span class="built_in">chr</span>(char) &lt;= <span class="string">&#x27;Z&#x27;</span>:  <span class="comment"># 大写字母</span></span><br><span class="line">            char = char - <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">            char = char - <span class="number">0x20</span></span><br><span class="line">            char = (char - <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>) + <span class="number">0x5a</span>) % <span class="number">26</span> + <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)  <span class="comment"># 模运算</span></span><br><span class="line">        <span class="keyword">elif</span> <span class="string">&#x27;a&#x27;</span> &lt;= <span class="built_in">chr</span>(char) &lt;= <span class="string">&#x27;z&#x27;</span>:  <span class="comment"># 小写字母</span></span><br><span class="line">            char = char - <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">            char = char + <span class="number">0x20</span>  <span class="comment"># 加上0x20</span></span><br><span class="line">            char = (char - <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>) + <span class="number">0x3a</span>) % <span class="number">26</span> + <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>)  <span class="comment"># 模运算</span></span><br><span class="line"></span><br><span class="line">        decrypted.append(<span class="built_in">chr</span>(char))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(decrypted)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试解密函数</span></span><br><span class="line">gzflag = [<span class="number">0x66</span>, <span class="number">0x73</span>, <span class="number">0x6a</span>, <span class="number">0x61</span>, <span class="number">0x6d</span>, <span class="number">0x7b</span>, <span class="number">0x48</span>, <span class="number">0x31</span>, <span class="number">0x30</span>, <span class="number">0x49</span>, <span class="number">0x38</span>, <span class="number">0x33</span>,</span><br><span class="line">          <span class="number">0x30</span>, <span class="number">0x37</span>, <span class="number">0x2d</span>, <span class="number">0x36</span>, <span class="number">0x35</span>, <span class="number">0x4c</span>, <span class="number">0x4b</span>, <span class="number">0x2d</span>, <span class="number">0x34</span>, <span class="number">0x4c</span>, <span class="number">0x35</span>, <span class="number">0x36</span>,</span><br><span class="line">          <span class="number">0x2d</span>, <span class="number">0x49</span>, <span class="number">0x30</span>, <span class="number">0x37</span>, <span class="number">0x39</span>, <span class="number">0x2d</span>, <span class="number">0x30</span>, <span class="number">0x31</span>, <span class="number">0x32</span>, <span class="number">0x37</span>, <span class="number">0x38</span>, <span class="number">0x4b</span>,</span><br><span class="line">          <span class="number">0x4d</span>, <span class="number">0x49</span>, <span class="number">0x30</span>, <span class="number">0x32</span>, <span class="number">0x31</span>, <span class="number">0x4b</span>, <span class="number">0x7d</span>]</span><br><span class="line"></span><br><span class="line">decrypted_flag = decrypt_flag(gzflag)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Decrypted Flag:&quot;</span>, decrypted_flag)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> gzflag:</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(i),end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2024-N1junior-wasm"><a href="#2024-N1junior-wasm" class="headerlink" title="2024 N1junior wasm"></a>2024 N1junior wasm</h2><h3 id="解题分析-1"><a href="#解题分析-1" class="headerlink" title="解题分析"></a>解题分析</h3><p>这是当时的一道0解题，现在来看并不是很难，同样的使用ghidra来解决。<br>我们找到关键的 main.silence函数进行分析。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br></pre></td><td class="code"><pre><span class="line">undefined4 main.slice(<span class="type">int</span> param1,undefined8 param_2,undefined8 param_3,undefined param_4)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  undefined8 *puVar1;</span><br><span class="line">  undefined uVar2;</span><br><span class="line">  <span class="type">int</span> iVar3;</span><br><span class="line">  ulonglong uVar4;</span><br><span class="line">  undefined8 uVar5;</span><br><span class="line">  </span><br><span class="line">  uVar4 = <span class="number">0</span>;</span><br><span class="line">  uVar5 = <span class="number">0</span>;</span><br><span class="line">code_r0x800ee613:</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> ((uVar2 = (undefined)uVar4, param1 != <span class="number">0</span> &amp;&amp; (param1 != <span class="number">1</span>))) &#123;</span><br><span class="line">      <span class="keyword">if</span> (param1 == <span class="number">2</span>) <span class="keyword">goto</span> code_r0x800ee6bc;</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span> (param1 != <span class="number">0x32</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (param1 == <span class="number">0x33</span>) &#123;</span><br><span class="line">          uVar2 = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (param1 != <span class="number">0x34</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (param1 == <span class="number">0x35</span>) &#123;</span><br><span class="line">            *(undefined *)((<span class="type">int</span>)register0x00000008 + <span class="number">0x38</span>) = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">do</span> &#123;</span><br><span class="line">            halt_trap();</span><br><span class="line">          &#125; <span class="keyword">while</span>( <span class="literal">true</span> );</span><br><span class="line">        &#125;</span><br><span class="line">        *(undefined *)((<span class="type">int</span>)register0x00000008 + <span class="number">0x38</span>) = uVar2;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">code_r0x800eeaba:</span><br><span class="line">      uVar4 = (ulonglong)(*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x2f</span>) == <span class="string">&#x27;9&#x27;</span>);</span><br><span class="line">      param1 = <span class="number">0x34</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    puVar1 = (undefined8 *)register0x00000008;</span><br><span class="line">    <span class="keyword">if</span> (register0x00000008 &lt;= *(undefined8 **)((<span class="type">int</span>)global_2 + <span class="number">0x10</span>)) &#123;</span><br><span class="line">      *(undefined8 *)((<span class="type">int</span>)register0x00000008 + <span class="number">-8</span>) = <span class="number">0x14170000</span>;</span><br><span class="line">      iVar3 = runtime.morestack_noctxt(<span class="number">0</span>);</span><br><span class="line">      puVar1 = (undefined8 *)((<span class="type">int</span>)register0x00000008 + <span class="number">-8</span>);</span><br><span class="line">      <span class="keyword">if</span> (iVar3 != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    puVar1[<span class="number">-4</span>] = puVar1[<span class="number">1</span>];</span><br><span class="line">    puVar1[<span class="number">-3</span>] = puVar1[<span class="number">2</span>];</span><br><span class="line">    register0x00000008 = (BADSPACEBASE *)(puVar1 + <span class="number">-5</span>);</span><br><span class="line">    *(undefined8 *)register0x00000008 = <span class="number">0x14170002</span>;</span><br><span class="line">    iVar3 = main.<span class="built_in">exit</span>(<span class="number">0</span>,puVar1[<span class="number">-4</span>],puVar1[<span class="number">-3</span>],puVar1[<span class="number">10</span>],puVar1[<span class="number">0xb</span>]);</span><br><span class="line">    <span class="keyword">if</span> (iVar3 != <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">code_r0x800ee6bc:</span><br><span class="line">    uVar4 = *(ulonglong *)((<span class="type">int</span>)register0x00000008 + <span class="number">0x18</span>);</span><br><span class="line">    uVar5 = *(undefined8 *)((<span class="type">int</span>)register0x00000008 + <span class="number">0x10</span>);</span><br><span class="line">    <span class="keyword">if</span> (uVar4 != <span class="number">0x30</span>) &#123;</span><br><span class="line">      param1 = <span class="number">0x35</span>;</span><br><span class="line">      <span class="keyword">goto</span> code_r0x800ee613;</span><br><span class="line">    &#125;</span><br><span class="line">code_r0x800ee6de:</span><br><span class="line">    <span class="keyword">if</span> (*(<span class="type">char</span> *)uVar5 == <span class="string">&#x27;Y&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee6f3:</span><br><span class="line">      <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">1</span>) == <span class="string">&#x27;3&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee707:</span><br><span class="line">        <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">2</span>) == <span class="string">&#x27;R&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee71c:</span><br><span class="line">          <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">3</span>) == <span class="string">&#x27;m&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee731:</span><br><span class="line">            <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">4</span>) == <span class="string">&#x27;c&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee746:</span><br><span class="line">              <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">5</span>) == <span class="string">&#x27;H&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee75b:</span><br><span class="line">                <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">6</span>) == <span class="string">&#x27;V&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee770:</span><br><span class="line">                  <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">7</span>) == <span class="string">&#x27;u&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee785:</span><br><span class="line">                    <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">8</span>) == <span class="string">&#x27;a&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee79a:</span><br><span class="line">                      <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">9</span>) == <span class="string">&#x27;3&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee7ae:</span><br><span class="line">                        <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">10</span>) == <span class="string">&#x27;t&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee7c3:</span><br><span class="line">                          <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0xb</span>) == <span class="string">&#x27;X&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee7d8:</span><br><span class="line">                            <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0xc</span>) == <span class="string">&#x27;Q&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee7ed:</span><br><span class="line">                              <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0xd</span>) == <span class="string">&#x27;V&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee802:</span><br><span class="line">                                <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0xe</span>) == <span class="string">&#x27;N&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee817:</span><br><span class="line">                                  uVar4 = (ulonglong)*(byte *)((<span class="type">int</span>)uVar5 + <span class="number">0xf</span>);</span><br><span class="line">                                  <span class="keyword">if</span> (uVar4 == <span class="number">0x4e</span>) &#123;</span><br><span class="line">code_r0x800ee82e:</span><br><span class="line">                                    uVar4 = (ulonglong)*(byte *)((<span class="type">int</span>)uVar5 + <span class="number">0x10</span>);</span><br><span class="line">                                    <span class="keyword">if</span> (uVar4 == <span class="number">0x58</span>) &#123;</span><br><span class="line">code_r0x800ee845:</span><br><span class="line">                                      <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x11</span>) == <span class="string">&#x27;z&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee85a:</span><br><span class="line">                                        uVar4 = (ulonglong)*(byte *)((<span class="type">int</span>)uVar5 + <span class="number">0x12</span>);</span><br><span class="line">                                        <span class="keyword">if</span> (uVar4 == <span class="number">0x59</span>) &#123;</span><br><span class="line">code_r0x800ee871:</span><br><span class="line">                                          <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x13</span>) == <span class="string">&#x27;2&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee885:</span><br><span class="line">                                            <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x14</span>) == <span class="string">&#x27;N&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee89a:</span><br><span class="line">                                              <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x15</span>) == <span class="string">&#x27;j&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee8af:</span><br><span class="line">                                                <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x16</span>) == <span class="string">&#x27;Y&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee8c4:</span><br><span class="line">                                                  uVar4 = (ulonglong)*(byte *)((<span class="type">int</span>)uVar5 + <span class="number">0x17</span>);</span><br><span class="line">                                                  <span class="keyword">if</span> (uVar4 == <span class="number">0x32</span>) &#123;</span><br><span class="line">code_r0x800ee8da:</span><br><span class="line">                                                    <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x18</span>) == <span class="string">&#x27;N&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee8ef:</span><br><span class="line">                                                      uVar4 = (ulonglong)</span><br><span class="line">                                                              *(byte *)((<span class="type">int</span>)uVar5 + <span class="number">0x19</span>);</span><br><span class="line">                                                      <span class="keyword">if</span> (uVar4 == <span class="number">0x6a</span>) &#123;</span><br><span class="line">code_r0x800ee906:</span><br><span class="line">                                                        <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x1a</span>) == <span class="string">&#x27;Z&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee91b:</span><br><span class="line">                                                          <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x1b</span>) == <span class="string">&#x27;f&#x27;</span>)  &#123;</span><br><span class="line">code_r0x800ee930:</span><br><span class="line">                                                            <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x1c</span>) == <span class="string">&#x27;R&#x27;</span> )</span><br><span class="line">                                                            &#123;</span><br><span class="line">code_r0x800ee945:</span><br><span class="line">                                                              <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x1d</span>) ==</span><br><span class="line">                                                                  <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee959:</span><br><span class="line">                                                                <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x1e</span>) ==</span><br><span class="line">                                                                    <span class="string">&#x27;9&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee96d:</span><br><span class="line">                                                                  <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x1f</span>)</span><br><span class="line">                                                                      == <span class="string">&#x27;B&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee982:</span><br><span class="line">                                                                    <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x20</span> )</span><br><span class="line">                                                                        == <span class="string">&#x27;T&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee997:</span><br><span class="line">                                                                      <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 +</span><br><span class="line">                                                                                   <span class="number">0x21</span>) == <span class="string">&#x27;E&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee9ac:</span><br><span class="line">                                                                        <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 +</span><br><span class="line">                                                                                     <span class="number">0x22</span>) == <span class="string">&#x27;5&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee9c0:</span><br><span class="line">                                                                          <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 +</span><br><span class="line">                                                                                       <span class="number">0x23</span>) == <span class="string">&#x27;H&#x27;</span> )</span><br><span class="line">                                                                          &#123;</span><br><span class="line">code_r0x800ee9d5:</span><br><span class="line">                                                                            <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar <span class="number">5</span></span><br><span class="line">                                                                                         + <span class="number">0x24</span>) ==</span><br><span class="line">                                                                                <span class="string">&#x27;X&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee9ea:</span><br><span class="line">                                                                              <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)</span><br><span class="line">                                                  uVar5 + <span class="number">0x25</span>) == <span class="string">&#x27;z&#x27;</span>) &#123;</span><br><span class="line">code_r0x800ee9ff:</span><br><span class="line">                                                    <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x26</span>) == <span class="string">&#x27;Y&#x27;</span>) &#123;</span><br><span class="line">code_r0x800eea14:</span><br><span class="line">                                                      <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x27</span>) == <span class="string">&#x27;2&#x27;</span>) &#123;</span><br><span class="line">code_r0x800eea28:</span><br><span class="line">                                                        <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x28</span>) == <span class="string">&#x27;N&#x27;</span>) &#123;</span><br><span class="line">code_r0x800eea3d:</span><br><span class="line">                                                          <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x29</span>) == <span class="string">&#x27;j&#x27;</span>)  &#123;</span><br><span class="line">code_r0x800eea52:</span><br><span class="line">                                                            <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x2a</span>) == <span class="string">&#x27;Y&#x27;</span> )</span><br><span class="line">                                                            &#123;</span><br><span class="line">code_r0x800eea67:</span><br><span class="line">                                                              <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x2b</span>) ==</span><br><span class="line">                                                                  <span class="string">&#x27;2&#x27;</span>) &#123;</span><br><span class="line">code_r0x800eea7b:</span><br><span class="line">                                                                <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x2c</span>) ==</span><br><span class="line">                                                                    <span class="string">&#x27;N&#x27;</span>) &#123;</span><br><span class="line">code_r0x800eea90:</span><br><span class="line">                                                                  <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x2d</span>)</span><br><span class="line">                                                                      == <span class="string">&#x27;j&#x27;</span>) &#123;</span><br><span class="line">code_r0x800eeaa5:</span><br><span class="line">                                                                    <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)uVar5 + <span class="number">0x2e</span> )</span><br><span class="line">                                                                        == <span class="string">&#x27;Z&#x27;</span>)</span><br><span class="line">                                                                    <span class="keyword">goto</span> code_r0x800eeaba;</span><br><span class="line">                                                                    param1 = <span class="number">0x33</span>;</span><br><span class="line">                                                                  &#125;</span><br><span class="line">                                                        <span class="comment">// ....此处省略N行</span></span><br><span class="line">  &#125; <span class="keyword">while</span>( <span class="literal">true</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们发现他使用了一个嵌套判断来对flag进行判断，我们将它提取出来可以发现这很像一个base编码后的形式，于是尝试一下base64，成功！<br>很简单的一道题，但很多人因为畏惧wasm所以都没有去解这道题。同时另一个原因是网上绝大多数的教程都没有提到鸡爪插件来解决wasm。绝大多数都是wat工具然后在配合ida，流程过于繁琐。</p>
+<h3 id="exp-1"><a href="#exp-1" class="headerlink" title="exp"></a>exp</h3><p>Y3RmcHVua3tXQVNNXzY2NjY2NjZfR09BTE5HXzY2NjY2NjZ9</p>
+<p>base64解码</p>
+<p>ctfpunk{WASM_6666666_GOALNG_6666666}</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>WebAssembly的逆向越来越常见，本文通过介绍几种逆向方法，如使用wasm2wat和ida、Ghidra插件以及Chrome开发者工具，结合两道赛题实例，展示了如何有效解决Wasm逆向问题。</p>
+<p>其中，Ghidra插件尤为显著地降低了Wasm逆向的门槛。</p>
+<p>希望这篇文章能帮助到各位师傅更好的解决往后的wasm题目。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>viol1t</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://viol1t.com/2024/10/21/%E6%B5%85%E6%9E%90%E6%96%B0%E6%97%B6%E4%BB%A3%E7%9A%84wasm%E9%80%86%E5%90%91%E6%80%9D%E8%B7%AF-%E7%94%B1%E6%BA%90%E9%B2%81%E6%9D%AF%E5%85%A5%E9%97%A8%E9%A2%98%E5%92%8CN1junior%E9%9B%B6%E8%A7%A3%E9%A2%98%E5%BC%80%E5%A7%8B/">https://viol1t.com/2024/10/21/%E6%B5%85%E6%9E%90%E6%96%B0%E6%97%B6%E4%BB%A3%E7%9A%84wasm%E9%80%86%E5%90%91%E6%80%9D%E8%B7%AF-%E7%94%B1%E6%BA%90%E9%B2%81%E6%9D%AF%E5%85%A5%E9%97%A8%E9%A2%98%E5%92%8CN1junior%E9%9B%B6%E8%A7%A3%E9%A2%98%E5%BC%80%E5%A7%8B/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2023 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/re/"># re</a>
+                    
+                        <a href="/tags/wasm/"># wasm</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/10/31/LLVM-PASS-PWN%EF%BC%9A%E4%BD%BF%E7%94%A8c-%E7%BC%96%E5%86%99exp/">LLVM PASS PWN：使用c++编写exp</a>
+            
+            
+            <a class="next" rel="next" href="/2024/10/21/2024%E5%B9%B4%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%88%9D%E8%B5%9Bwp/">2024年强网拟态初赛wp</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© viol1t | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

