@@ -44,7 +44,7 @@
     
 
 
-<meta name="generator" content="Hexo 6.3.0"></head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/bloom.css"><script src="/js/bloom.js" defer></script><link rel="stylesheet" href="/css/brand.css"><link rel="stylesheet" href="/css/home-discover.css"></head>
 
 <body>
     <script>
@@ -56,11 +56,11 @@
             if (isDark) {
                 pagebody.classList.add('dark-theme');
                 // mobile
-                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+                document.getElementById("mobile-toggle-theme") && (document.getElementById("mobile-toggle-theme").innerText = "· 深色")
             } else {
                 pagebody.classList.remove('dark-theme');
                 // mobile
-                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+                document.getElementById("mobile-toggle-theme") && (document.getElementById("mobile-toggle-theme").innerText = "· 浅色")
             }
         })();
     </script>
@@ -69,19 +69,19 @@
         <header>
     <nav class="navbar">
         <div class="container">
-            <div class="navbar-header header-logo"><a href="/">viol1t</a></div>
+            <div class="navbar-header header-logo"><a class="vio-wordmark" href="/" aria-label="viol1t 校队首页"><span>viol<span class="vio-one">1</span>t</span><i aria-hidden="true">✳</i></a></div>
             <div class="menu navbar-right">
                 
-                    <a class="menu-item" href="/archives">Posts</a>
+                    <a class="menu-item" href="/archives">技术文章</a>
                 
-                    <a class="menu-item" href="/achievement">Achievement</a>
+                    <a class="menu-item" href="/achievement">荣誉成绩</a>
                 
-                    <a class="menu-item" href="/members">Members</a>
+                    <a class="menu-item" href="/members">校队成员</a>
                 
-                    <a class="menu-item" href="/about">About</a>
+                    <a class="menu-item" href="/about">关于我们</a>
                 
                 <input id="switch_default" type="checkbox" class="switch_default">
-                <label for="switch_default" class="toggleBtn"></label>
+                <label for="switch_default" class="toggleBtn" title="切换深浅主题" aria-label="切换深浅主题"></label>
             </div>
         </div>
     </nav>
@@ -91,19 +91,19 @@
         <div class="container">
             <div class="navbar-header">
                 <div>
-                    <a href="/">viol1t</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                    <a class="vio-wordmark" href="/" aria-label="viol1t 校队首页"><span>viol<span class="vio-one">1</span>t</span><i aria-hidden="true">✳</i></a><a id="mobile-toggle-theme">·&nbsp;浅色</a>
                 </div>
-                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; 菜单</div>
             </div>
             <div class="menu" id="mobile-menu">
                 
-                    <a class="menu-item" href="/archives">Posts</a>
+                    <a class="menu-item" href="/archives">技术文章</a>
                 
-                    <a class="menu-item" href="/achievement">Achievement</a>
+                    <a class="menu-item" href="/achievement">荣誉成绩</a>
                 
-                    <a class="menu-item" href="/members">Members</a>
+                    <a class="menu-item" href="/members">校队成员</a>
                 
-                    <a class="menu-item" href="/about">About</a>
+                    <a class="menu-item" href="/about">关于我们</a>
                 
             </div>
         </div>
@@ -127,10 +127,10 @@
                 
     <div class="container profile-container">
     <div class="intro">
-        <div class="avatar">
-            <a href="/archives"><img src="/image/viol1t2.png"></a>
+        <div class="avatar"><div class="bloom-art" aria-hidden="true"><div class="bloom-ring"></div><div class="bloom-petals"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="bloom-dust"></div></div>
+            <button class="bloom-toggle" type="button" aria-label="展开紫罗兰动画" aria-pressed="false"><img src="/image/viol1t2.png" alt="viol1t 校队标志"></button>
         </div>
-        <div class="nickname"></div>
+        <div class="nickname"></div><div class="bloom-words" aria-hidden="true"><span>VIOL1T · 源自 VIOLET</span><h1>心怀热爱，向未知绽放。</h1><p>因好奇而探索，因同行而成长。<br>我们永远不会停止前进。</p><small>再次点击队标，收起这片紫罗兰。</small></div>
         <div class="description"><p><strong>We are a team full of dreams, we will never stop moving forward!</strong></p>
 </div>
         <div class="links">
@@ -167,7 +167,14 @@
             
         </div>
     </div>
-</div>
+</div><section class="home-discover" aria-label="了解与参与校队">
+  <div class="discover-heading"><span>在探索中，遇见同路人</span><span class="discover-caption">VIOL1T · 始于 2022</span></div>
+  <div class="discover-grid">
+    <article class="discover-item"><span class="discover-label">01 / 认识我们</span><h2>因热爱相聚</h2><p>来自盐城师范学院的网络安全爱好者，在学习、交流与实践中共同成长。</p><a href="/about/">了解校队 ↗</a></article>
+    <article class="discover-item discover-training"><span class="discover-label">02 / 动手实践</span><h2>从第一道 flag 开始</h2><p>把好奇变成尝试。进入校内训练平台，循着线索，找到属于你的答案。</p><a href="https://ctf.viol1t.com/">进入训练平台 ↗</a></article>
+    <article class="discover-item"><span class="discover-label">03 / 荣誉片段</span><h2>每一步，都有回响</h2><p>2024 WKCTF 二等奖<br>2023 第一届山河杯网络安全大赛二等奖</p><a href="/achievement/">查看历年成绩 ↗</a></article>
+  </div>
+</section>
 
 
             </div>

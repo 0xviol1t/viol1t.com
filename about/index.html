@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      content="width=device-width, initial-scale=1.0, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <meta name="author" content="viol1t">
@@ -24,7 +24,7 @@
 
     <!-- stylesheets list from _config.yml -->
     
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/team.css">
     
 
 
@@ -44,7 +44,7 @@
     
 
 
-<meta name="generator" content="Hexo 6.3.0"></head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/brand.css"></head>
 
 <body>
     <script>
@@ -56,11 +56,11 @@
             if (isDark) {
                 pagebody.classList.add('dark-theme');
                 // mobile
-                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+                document.getElementById("mobile-toggle-theme") && (document.getElementById("mobile-toggle-theme").innerText = "· 深色")
             } else {
                 pagebody.classList.remove('dark-theme');
                 // mobile
-                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+                document.getElementById("mobile-toggle-theme") && (document.getElementById("mobile-toggle-theme").innerText = "· 浅色")
             }
         })();
     </script>
@@ -69,19 +69,20 @@
         <header>
     <nav class="navbar">
         <div class="container">
-            <div class="navbar-header header-logo"><a href="/">viol1t</a></div>
+            <div class="navbar-header header-logo"><a class="vio-wordmark" href="/" aria-label="viol1t 校队首页"><span>viol<span class="vio-one">1</span>t</span><i aria-hidden="true">✳</i></a></div>
             <div class="menu navbar-right">
                 
-                    <a class="menu-item" href="/archives">Posts</a>
+                    <a class="menu-item" href="/archives">技术文章</a>
                 
-                    <a class="menu-item" href="/achievement">Achievement</a>
+                    <a class="menu-item" href="/achievement">荣誉成绩</a>
                 
-                    <a class="menu-item" href="/members">Members</a>
+                    <a class="menu-item" href="/members">校队成员</a>
                 
-                    <a class="menu-item" href="/about">About</a>
+                    <a class="menu-item" href="/about">关于我们</a>
+                    <a class="menu-item" href="https://ctf.viol1t.com/">训练平台 ↗</a>
                 
                 <input id="switch_default" type="checkbox" class="switch_default">
-                <label for="switch_default" class="toggleBtn"></label>
+                <label for="switch_default" class="toggleBtn" title="切换深浅主题" aria-label="切换深浅主题"></label>
             </div>
         </div>
     </nav>
@@ -91,19 +92,20 @@
         <div class="container">
             <div class="navbar-header">
                 <div>
-                    <a href="/">viol1t</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                    <a class="vio-wordmark" href="/" aria-label="viol1t 校队首页"><span>viol<span class="vio-one">1</span>t</span><i aria-hidden="true">✳</i></a><a id="mobile-toggle-theme">·&nbsp;浅色</a>
                 </div>
-                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; 菜单</div>
             </div>
             <div class="menu" id="mobile-menu">
                 
-                    <a class="menu-item" href="/archives">Posts</a>
+                    <a class="menu-item" href="/archives">技术文章</a>
                 
-                    <a class="menu-item" href="/achievement">Achievement</a>
+                    <a class="menu-item" href="/achievement">荣誉成绩</a>
                 
-                    <a class="menu-item" href="/members">Members</a>
+                    <a class="menu-item" href="/members">校队成员</a>
                 
-                    <a class="menu-item" href="/about">About</a>
+                    <a class="menu-item" href="/about">关于我们</a>
+                    <a class="menu-item" href="https://ctf.viol1t.com/">训练平台 ↗</a>
                 
             </div>
         </div>
@@ -127,13 +129,19 @@
                 <div class="container">
     <article class="post-wrap page">
         
-        <h2 class="post-title">About</h2>
+        <h2 class="post-title">关于 viol1t</h2>
         
         <section class="post-content">
             <p>viol1t（由violet转换而来）成立于2022年，由盐城师范学院网络空间安全爱好者组成，得到信息工程学院陈碧云老师的支持与指导。</p>
 <p>我们是一支充满梦想的团队，我们永远不会停止前进！</p>
 
-        </section>
+        <h2>在实践中成长</h2>
+<p>这里连接着对网络安全充满好奇的同学。通过题目练习、技术交流与赛事实践，我们一起积累知识、分享思路。</p>
+<h2>从第一道 flag 开始</h2>
+<p>欢迎新同学进入校内 CTF 训练平台。开放注册期间可提交注册申请，账号经管理员审核激活后登录；活动安排以平台公告为准。</p>
+<p><a class="team-button primary" href="https://ctf.viol1t.com/">进入 训练平台 ↗</a></p>
+<h2>了解更多</h2>
+<p><a href="/achievement/">历年荣誉</a> · <a href="/members/">校队成员</a> · <a href="/archives/">技术文章</a></p></section>
     </article>
 </div>
 

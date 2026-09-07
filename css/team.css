@@ -1,0 +1,19 @@
+/* Supplemental styles; original Chic styles and attribution are retained. */
+.profile-container {padding:64px 20px 40px;box-sizing:border-box}
+.intro {width:100%;max-width:1000px;margin:auto}
+.intro h1.nickname {font-size:40px;margin:18px 0 0}
+.team-actions {display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:28px 0 40px}
+a.team-button {display:inline-block;padding:11px 22px;border:1px solid #9860cc;border-radius:8px;color:#7843ac;text-decoration:none}
+a.team-button.primary {background:#8345b8;color:#fff}
+.team-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:24px 0 32px;text-align:left}
+a.team-card {display:block;padding:24px;border:1px solid #e5daef;border-radius:12px;background:#faf7fd;color:inherit}
+.team-card span {font-size:12px;letter-spacing:1px;color:#8345b8}
+.team-card h2 {font-size:20px;margin:12px 0}
+.team-card p {line-height:1.8;font-size:14px;margin:0}
+.team-card:hover {border-color:#9860cc;transform:translateY(-2px)}
+.team-note {color:#777;line-height:1.8}
+.post-content li {margin-bottom:12px}
+.dark-theme a.team-card {background:#302936;border-color:#53415f}
+.dark-theme .team-card span,.dark-theme a.team-button:not(.primary) {color:#c896ef}
+a.team-button:focus-visible,a.team-card:focus-visible {outline:3px solid #b37ddb;outline-offset:4px}
+@media(max-width:760px){.team-grid{grid-template-columns:1fr}.profile-container{padding:32px 16px}.intro h1.nickname{font-size:32px}}

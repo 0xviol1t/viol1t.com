@@ -1,0 +1,35 @@
+/* Homepage-only, reversible scene. The original document never navigates away. */
+body {transition:background-color 1.6s ease,color 1.3s ease}
+body::before {content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;background:radial-gradient(ellipse at 50% 46%,#74399966,transparent 58%),linear-gradient(145deg,#100b1e,#241332 65%,#120d20);transition:opacity 1.8s ease}
+body.bloom-open::before {opacity:1}
+.wrapper {position:relative;z-index:1}
+.intro .avatar {position:relative;isolation:isolate}
+.bloom-toggle {position:relative;z-index:3;border:0;background:transparent;padding:0;margin:0;line-height:0;border-radius:50%;cursor:pointer;vertical-align:middle;-webkit-tap-highlight-color:transparent}
+.bloom-toggle:focus-visible {outline:2px solid #b571e4;outline-offset:14px}
+.intro .avatar .bloom-toggle img {transition:filter 1.4s ease,box-shadow 1.4s ease,transform 1.6s cubic-bezier(.22,1,.36,1)}
+.intro .avatar .bloom-toggle img:hover {transform:none}
+.bloom-toggle:hover {filter:brightness(1.06)}
+.bloom-open .intro .avatar .bloom-toggle img {transform:rotate(60deg);box-shadow:0 0 0 7px #eddaff22,0 0 60px #c385ff66;filter:brightness(1.12)}
+.bloom-art {position:absolute;width:min(620px,90vw);height:min(620px,90vw);left:50%;top:50%;transform:translate(-50%,-50%) scale(.2) rotate(-25deg);opacity:0;pointer-events:none;z-index:0;transition:transform 2s cubic-bezier(.22,1,.36,1),opacity 1.3s ease}
+.bloom-open .bloom-art {opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}
+.bloom-petals {position:absolute;inset:10%;animation:bloom-breathe 10s ease-in-out infinite;animation-play-state:paused}
+.bloom-open .bloom-petals,.bloom-open .bloom-ring,.bloom-open .bloom-dust {animation-play-state:running}
+.bloom-petals i {position:absolute;left:30%;top:5%;width:40%;height:50%;transform-origin:50% 90%;border-radius:60% 40% 52% 48%;border:1px solid #dab2fa38;background:linear-gradient(140deg,#d9a4fa44,#9142c333 50%,#511b7b05);box-shadow:inset 8px 5px 36px #dca9ff18}
+.bloom-petals i:nth-child(2){transform:rotate(60deg)}.bloom-petals i:nth-child(3){transform:rotate(120deg)}.bloom-petals i:nth-child(4){transform:rotate(180deg)}.bloom-petals i:nth-child(5){transform:rotate(240deg)}.bloom-petals i:nth-child(6){transform:rotate(300deg)}
+.bloom-ring {position:absolute;inset:4%;border:1px solid #dfb8ff22;border-radius:50%;animation:bloom-orbit 65s linear infinite;animation-play-state:paused}
+.bloom-ring::after {content:"";position:absolute;left:14%;top:14%;width:4px;height:4px;border-radius:50%;background:#e8cdff;box-shadow:0 0 15px 4px #cc86ff55}
+.bloom-dust {position:absolute;inset:0;background-image:radial-gradient(circle,#ecd4ff 1px,transparent 2px),radial-gradient(circle,#c793ee 1px,transparent 2px);background-size:97px 113px,151px 137px;background-position:13px 33px,41px 70px;mask-image:radial-gradient(circle,#0006,transparent 70%);animation:bloom-orbit 100s linear infinite reverse;animation-play-state:paused}
+.intro {position:relative}
+.bloom-words {position:absolute;top:calc(100% + 12px);left:50%;width:min(600px,90vw);transform:translate(-50%,18px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1s ease,transform 1.3s ease,visibility 1.3s;color:#f0dfff}
+.bloom-words span {font-size:10px;letter-spacing:4px;color:#c09bd9}
+.bloom-words h1 {font-family:Georgia,"Songti SC","SimSun",serif;font-size:clamp(23px,3.4vw,37px);font-weight:400;letter-spacing:3px;margin:15px 0}
+.bloom-words p {font-size:13px;line-height:1.9;color:#c5add5}.bloom-words small{font-size:10px;color:#a488b7}
+.bloom-open .bloom-words {opacity:1;visibility:visible;transform:translate(-50%,0)}
+.intro .description,.intro .links {transition:opacity .8s ease,transform 1s ease}
+.bloom-open .intro .description,.bloom-open .intro .links {opacity:0;transform:translateY(12px);pointer-events:none;visibility:hidden}
+.bloom-open header a,.bloom-open footer,.bloom-open footer a {color:#c8b6d6!important}
+.bloom-open header,.bloom-open footer {transition:opacity 1s;opacity:.65}
+.bloom-open .navbar-mobile {background:transparent}
+@keyframes bloom-breathe {50%{transform:scale(1.06) rotate(4deg)}}@keyframes bloom-orbit {to{transform:rotate(360deg)}}
+@media(max-height:750px){.bloom-words {top:calc(100% - 30px)}.bloom-words h1{margin:8px 0}.bloom-words p{margin:5px}.bloom-art{width:420px;height:420px}}
+@media(prefers-reduced-motion:reduce){body,body::before,.bloom-art,.bloom-words,.intro .description,.intro .links,.intro .avatar .bloom-toggle img{transition:none!important}.bloom-petals,.bloom-ring,.bloom-dust{animation:none!important}}

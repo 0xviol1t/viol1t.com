@@ -1,0 +1,12 @@
+/* Navigation and wordmark only: do not alter the homepage scene or layout. */
+a.vio-wordmark {display:inline-flex;align-items:center;gap:7px;color:#642896;font-family:Georgia,"Times New Roman",serif;font-size:31px;font-style:italic;font-weight:700;letter-spacing:-2px;line-height:1;text-decoration:none}
+.vio-wordmark .vio-one {color:#ad6ed0;display:inline-block;transform:rotate(-8deg)}
+.vio-wordmark i {font-size:18px;font-weight:400;font-style:normal;color:#a664ce;letter-spacing:0}
+.dark-theme a.vio-wordmark {color:#e3c4f8}
+.vio-wordmark:hover i {transform:rotate(60deg);transition:transform .6s}
+a.vio-wordmark:focus-visible {outline:2px solid #a664ce;outline-offset:7px;border-radius:4px}
+.navbar .menu-item {white-space:nowrap;letter-spacing:.06em;position:relative;transition:color .25s}
+.navbar .menu-item:hover {color:#9555c0}
+.navbar .menu-item:after {content:"";position:absolute;left:15%;right:15%;bottom:8px;height:1px;background:currentColor;transform:scaleX(0);transition:transform .25s}
+.navbar .menu-item:hover:after,.navbar .menu-item:focus-visible:after {transform:scaleX(1)}
+@media(prefers-reduced-motion:reduce){.vio-wordmark:hover i {transform:none}.navbar .menu-item,.navbar .menu-item:after{transition:none}}

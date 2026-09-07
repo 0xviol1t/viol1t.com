@@ -1,0 +1,23 @@
+/* Homepage-only supplemental content. Existing navigation and bloom files are untouched. */
+.home-discover {width:calc(100% - 64px);max-width:1060px;box-sizing:border-box;margin:15px auto 44px;transition:opacity .8s ease,visibility .8s ease}
+.discover-heading {display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e9e2ee;padding-bottom:16px;font-size:13px;color:#75657e;letter-spacing:.08em}
+.discover-caption {font-size:10px;color:#9d8ca7;letter-spacing:.18em}
+.discover-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;padding-top:24px}
+.discover-item {padding:0 28px;min-width:0}
+.discover-item:first-child {padding-left:0}
+.discover-item:last-child {padding-right:0}
+.discover-item+.discover-item {border-left:1px solid #e9e2ee}
+.discover-label {color:#9b73b2;font-size:10px;letter-spacing:.12em}
+.discover-item h2 {font-size:18px;line-height:1.6;font-weight:500;margin:9px 0;color:#32263c}
+.discover-item p {font-size:12px;line-height:1.9;color:#807585;margin:0 0 15px;min-height:46px}
+.discover-item a {font-size:12px;color:#8144a5;display:inline-flex;gap:20px;align-items:center}
+.discover-item a:hover {color:#a967cf}
+.discover-item a:focus-visible {outline:2px solid #a967cf;outline-offset:5px}
+.discover-training h2 {color:#8144a5}
+.dark-theme .discover-heading,.dark-theme .discover-item+.discover-item {border-color:#514358}
+.dark-theme .discover-item h2 {color:#dbc7e9}
+.dark-theme .discover-item p,.dark-theme .discover-heading {color:#b8a8c0}
+.dark-theme .discover-item a {color:#c292e0}
+.bloom-open .home-discover {opacity:0;visibility:hidden;pointer-events:none}
+@media(max-width:700px){.home-discover{width:calc(100% - 40px);margin:36px auto}.discover-grid{grid-template-columns:1fr;gap:22px}.discover-item,.discover-item:first-child,.discover-item:last-child{padding:0}.discover-item+.discover-item{border-left:0;border-top:1px solid #e9e2ee;padding-top:20px}.discover-item p{min-height:0}.discover-caption{display:none}.profile-container{min-height:430px}}
+@media(prefers-reduced-motion:reduce){.home-discover{transition:none}}
