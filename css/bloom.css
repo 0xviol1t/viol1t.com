@@ -33,3 +33,16 @@ body.bloom-open::before {opacity:1}
 @keyframes bloom-breathe {50%{transform:scale(1.06) rotate(4deg)}}@keyframes bloom-orbit {to{transform:rotate(360deg)}}
 @media(max-height:750px){.bloom-words {top:calc(100% - 30px)}.bloom-words h1{margin:8px 0}.bloom-words p{margin:5px}.bloom-art{width:420px;height:420px}}
 @media(prefers-reduced-motion:reduce){body,body::before,.bloom-art,.bloom-words,.intro .description,.intro .links,.intro .avatar .bloom-toggle img{transition:none!important}.bloom-petals,.bloom-ring,.bloom-dust{animation:none!important}}
+
+/* Keep the expanded scene centered in the viewport, independent of homepage modules. */
+.intro {transition:transform 1.6s cubic-bezier(.22,1,.36,1)}
+.bloom-open .intro {transform:translateY(var(--bloom-center-shift,0px))}
+.bloom-art {width:min(620px,90vw,70svh);height:min(620px,90vw,70svh)}
+.bloom-words {top:var(--bloom-copy-top,calc(100% + 12px))}
+@media(max-height:650px){
+  .bloom-words h1{font-size:clamp(21px,3vw,29px);margin:8px 0}
+  .bloom-words p{font-size:12px;line-height:1.6;margin:5px 0}
+  .bloom-words span{letter-spacing:2px}
+  .bloom-words small{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){.intro{transition:none!important}}
