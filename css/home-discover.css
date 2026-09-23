@@ -14,10 +14,23 @@
 .discover-item a:hover {color:#a967cf}
 .discover-item a:focus-visible {outline:2px solid #a967cf;outline-offset:5px}
 .discover-training h2 {color:#8144a5}
+.discover-achievements h2 {margin-bottom:5px}
+.achievement-ticker {position:relative;height:104px;overflow:hidden;margin:0 0 12px;border-top:1px solid #eee7f2;border-bottom:1px solid #eee7f2;outline:none;mask-image:linear-gradient(to bottom,transparent,#000 14%,#000 86%,transparent);-webkit-mask-image:linear-gradient(to bottom,transparent,#000 14%,#000 86%,transparent)}
+.achievement-ticker-track {animation:achievement-scroll 44s linear infinite;will-change:transform}
+.achievement-ticker:hover .achievement-ticker-track,.achievement-ticker:focus .achievement-ticker-track,.achievement-ticker:focus-within .achievement-ticker-track {animation-play-state:paused}
+.achievement-ticker:focus-visible {outline:2px solid #a967cf;outline-offset:4px}
+.achievement-ticker-list {list-style:none;margin:0;padding:0}
+.achievement-ticker-list li {min-height:52px;box-sizing:border-box;padding:9px 0 8px;font-size:12px;line-height:1.45;color:#766a7c;border-bottom:1px solid rgba(233,226,238,.72)}
+.achievement-ticker-list li span {display:inline-block;margin-right:8px;color:#9b73b2;font-size:10px;font-weight:600;letter-spacing:.08em;vertical-align:1px}
+.achievement-more {margin-top:1px}
+@keyframes achievement-scroll {from{transform:translateY(0)}to{transform:translateY(-50%)}}
 .dark-theme .discover-heading,.dark-theme .discover-item+.discover-item {border-color:#514358}
 .dark-theme .discover-item h2 {color:#dbc7e9}
 .dark-theme .discover-item p,.dark-theme .discover-heading {color:#b8a8c0}
 .dark-theme .discover-item a {color:#c292e0}
+.dark-theme .achievement-ticker {border-color:#514358}
+.dark-theme .achievement-ticker-list li {color:#b8a8c0;border-color:rgba(81,67,88,.72)}
+.dark-theme .achievement-ticker-list li span {color:#c292e0}
 .bloom-open .home-discover {opacity:0;visibility:hidden;pointer-events:none}
 @media(max-width:700px){.home-discover{width:calc(100% - 40px);margin:36px auto}.discover-grid{grid-template-columns:1fr;gap:22px}.discover-item,.discover-item:first-child,.discover-item:last-child{padding:0}.discover-item+.discover-item{border-left:0;border-top:1px solid #e9e2ee;padding-top:20px}.discover-item p{min-height:0}.discover-caption{display:none}.profile-container{min-height:430px}}
-@media(prefers-reduced-motion:reduce){.home-discover{transition:none}}
+@media(prefers-reduced-motion:reduce){.home-discover{transition:none}.achievement-ticker{overflow-y:auto;mask-image:none;-webkit-mask-image:none}.achievement-ticker-track{animation:none}.achievement-ticker-list[aria-hidden="true"]{display:none}}
